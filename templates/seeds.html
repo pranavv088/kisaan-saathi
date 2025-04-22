@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriShop - Grains & Pulses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FFC107;
+            --dark: #2E7D32;
+            --light: #F1F8E9;
+            --soil: #5D4037;
+            --sale: #E53935;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f7;
+            color: #333;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        nav ul li a i {
+            margin-right: 5px;
+        }
+        /* Remove underline and inherit color for category links */
+.category-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Highlight active nav item */
+nav ul li a.active {
+    color: var(--primary);
+    font-weight: bold;
+}
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--sale);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3d8b40;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Products Section */
+        .products {
+            padding: 3rem 1rem;
+            background-color: #f9f9f7;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            color: #666;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--sale);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .product-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
+        }
+        
+        .quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover .quick-view {
+            bottom: 0;
+        }
+        
+        .product-content {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            color: var(--primary);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            height: 50px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .current-price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .discount {
+            color: var(--sale);
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-grow: 1;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #3d8b40;
+        }
+        
+        .wishlist {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .wishlist:hover, .wishlist.active {
+            color: var(--sale);
+        }
+        
+        /* Filter Section */
+        .filters {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+        
+        .filter-group h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--light);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/static/image/logo1.png" alt="kisaan Sathi Logo">
+                <div class="logo-text">
+                    <h1>kisaan<span>Shop</span></h1>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    
+                  
+                </ul>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="seeds.html" class="active"><i class="fas fa-seedling"></i> Seeds</a></li>
+                    
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Premium Grains & Pulses</h1>
+            <p>High-quality seeds for wheat, rice, maize, and other staple crops to maximize your harvest</p>
+            <a href="#products" class="btn btn-primary">Browse Products</a>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="section-title">
+            <h2>Grains & Pulses</h2>
+            <p>High-quality seeds for your farming needs</p>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Wheat -->
+            <div class="product-card">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/11/42/98/32/240_F_1142983219_EBlPCBFUK1NXug2NOfeLGew6tWO8ANpm.jpg" alt="Wheat Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CEREAL</span>
+                    <h3 class="product-title">Premium Wheat Seeds - High Yield Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹599</span>
+                        <span class="original-price">₹799</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Organic-Wheat-Seeds-Pack-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rice -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t4.ftcdn.net/jpg/13/66/28/15/240_F_1366281566_tY36cflD2IQyak6489BfyFbep2Yh4mM4.jpg" alt="Rice Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CEREAL</span>
+                    <h3 class="product-title">Hybrid Rice Seeds - Basmati Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹699</span>
+                        <span class="original-price">₹899</span>
+                        <span class="discount">22% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Basmati-Rice-Seeds-Hybrid-Variety/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Maize (Corn) -->
+            <div class="product-card">
+                <div class="product-badge">NEW</div>
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/10/75/67/14/240_F_1075671430_Vow5k3wjIxRI5PtNaT7P5q0OzlDe3MHy.jpg" alt="Maize Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CEREAL</span>
+                    <h3 class="product-title">Sweet Corn Seeds - Hybrid F1 Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹499</span>
+                        <span class="original-price">₹649</span>
+                        <span class="discount">23% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Sweet-Corn-Seeds-Hybrid-Variety/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Barley -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/10/61/86/30/240_F_1061863063_pAX2YnBDZvYPlbQfwsXT7e2YzAl67K6X.jpg" alt="Barley Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CEREAL</span>
+                    <h3 class="product-title">Organic Barley Seeds - Hulless Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹549</span>
+                        <span class="original-price">₹699</span>
+                        <span class="discount">21% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Organic-Barley-Seeds-Hulless-Variety/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Soybean -->
+            <div class="product-card">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-img">
+                    <img src="https://t4.ftcdn.net/jpg/10/30/29/83/240_F_1030298370_jrSzbYEqJDEOpid4W8IDuhGJRG9hBaFg.jpg" alt="Soybean Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">OILSEED</span>
+                    <h3 class="product-title">High Protein Soybean Seeds</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹649</span>
+                        <span class="original-price">₹849</span>
+                        <span class="discount">24% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/High-Protein-Soybean-Seeds-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mustard -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/01/93/08/62/240_F_193086288_xXYqPwvKgy4FkodoIIhqKO9nJ8RFtK0h.jpg" alt="Mustard Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">OILSEED</span>
+                    <h3 class="product-title">Mustard Seeds - High Oil Content</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹399</span>
+                        <span class="original-price">₹499</span>
+                        <span class="discount">20% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Mustard-Seeds-High-Oil-Content/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Groundnut (Peanut) -->
+            <div class="product-card">
+                <div class="product-badge">NEW</div>
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/00/71/74/12/240_F_71741251_FxymulYY3EC1IcKWaq4nENxE2NUdjFbp.jpg" alt="Groundnut Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">OILSEED</span>
+                    <h3 class="product-title">Groundnut Seeds - Bold Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹449</span>
+                        <span class="original-price">₹599</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Groundnut-Seeds-Bold-Variety-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cotton -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/02/17/17/28/360_F_217172868_Vl0b8OYVpjW41tOKD2oBI9hwUNk0Lc6g.jpg" alt="Cotton Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">FIBER CROP</span>
+                    <h3 class="product-title">BT Cotton Seeds - Hybrid Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹799</span>
+                        <span class="original-price">₹999</span>
+                        <span class="discount">20% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/BT-Cotton-Seeds-Hybrid-Variety/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sorghum (Jowar) -->
+            <div class="product-card">
+                <div class="product-badge">LIMITED</div>
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/05/73/20/40/240_F_573204056_vV7LfIBumN4M94cud6DAwzXGvaq0mYXd.jpg" alt="Sorghum Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CEREAL</span>
+                    <h3 class="product-title">Sorghum (Jowar) Seeds - High Yield</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹349</span>
+                        <span class="original-price">₹449</span>
+                        <span class="discount">22% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Sorghum-Jowar-Seeds-High-Yield/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Millet (Bajra) -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t4.ftcdn.net/jpg/12/85/88/19/240_F_1285881958_OkmkgPfbeq7Okj4mi98HG8uZIM7ebBNY.jpg" alt="Millet Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CEREAL</span>
+                    <h3 class="product-title">Pearl Millet (Bajra) Seeds</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹299</span>
+                        <span class="original-price">₹399</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Pearl-Millet-Bajra-Seeds-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chickpea (Gram) -->
+            <div class="product-card">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/02/46/18/36/240_F_246183653_61iqADQodisc1LzyVTLkazRYcjGkYYQV.jpg" alt="Chickpea Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">PULSE</span>
+                    <h3 class="product-title">Chickpea (Gram) Seeds - Kabuli</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹499</span>
+                        <span class="original-price">₹649</span>
+                        <span class="discount">23% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Chickpea-Gram-Seeds-Kabuli-Variety/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lentil (Masoor) -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/04/84/96/52/240_F_484965248_1OQgDftTiLIfwOH6KMKz8zvQOeP4YBVS.jpg" alt="Lentil Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">PULSE</span>
+                    <h3 class="product-title">Lentil (Masoor) Seeds - Premium</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹449</span>
+                        <span class="original-price">₹599</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Lentil-Masoor-Seeds-Premium-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Green Gram (Moong) -->
+            <div class="product-card">
+                <div class="product-badge">NEW</div>
+                <div class="product-img">
+                    <img src="https://t4.ftcdn.net/jpg/02/99/76/51/240_F_299765148_y69pkfGzctmeVPyhT2Diary1lYE620yq.jpg" alt="Green Gram Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">PULSE</span>
+                    <h3 class="product-title">Green Gram (Moong) Seeds</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹399</span>
+                        <span class="original-price">₹499</span>
+                        <span class="discount">20% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Green-Gram-Moong-Seeds-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Black Gram (Urad) -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/04/35/55/36/240_F_435553660_9GKwFs0UGIiu0bRWXGuQtShVAnWPecqd.jpg" alt="Black Gram Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">PULSE</span>
+                    <h3 class="product-title">Black Gram (Urad) Seeds</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹449</span>
+                        <span class="original-price">₹599</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Black-Gram-Urad-Seeds-1kg/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sunflower -->
+            <div class="product-card">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-img">
+                    <img src="https://t3.ftcdn.net/jpg/12/24/34/96/240_F_1224349609_KxpW6olNBwncTapLm8EXQaqLEGGA6fiI.jpg" alt="Sunflower Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">OILSEED</span>
+                    <h3 class="product-title">Sunflower Seeds - High Oil Content</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹599</span>
+                        <span class="original-price">₹799</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://www.amazon.in/Sunflower-Seeds-High-Oil-Content/dp/B07XJQZQZQ">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Simple mobile menu toggle functionality
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        });
+        
+        // Simple filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // In a real implementation, you would filter products here
+            });
+        });
+    </script>
+</body>
+</html>

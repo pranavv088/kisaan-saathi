@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>किसान साथी - प्रोफाइल</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #FFC107;
+            --secondary-dark: #FFA000;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #757575;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('{{ url_for("static", filename="image/background.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-icon {
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-right: 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary-light);
+        }
+
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-icon i {
+            display: none;
+        }
+
+        .profile-icon:not(:has(img)) i {
+            display: flex;
+        }
+
+        .profile-info {
+            text-align: left;
+        }
+
+        .profile-info h3 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .profile-details {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .detail-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-item i {
+            color: var(--primary);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            width: 100px;
+        }
+
+        .detail-value {
+            color: var(--text-color);
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: transparent;
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 3px 10px;
+            font-size: 0.75rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-toggle:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="lang-toggle" onclick="toggleLanguage()" id="langToggle">English</button>
+        <img src="/static/image/logo1.png" alt="Kisan Sathi Logo" class="logo">
+        <h2 id="title">🌾 उपयोगकर्ता प्रोफाइल 🌾</h2>
+
+        <div class="profile-header">
+            <div class="profile-icon">
+                {% if profile_picture %}
+                    <img src="{{ url_for('uploaded_images', filename=profile_picture) }}" alt="Profile Picture" onerror="this.style.display='none'; this.parentElement.querySelector('i').style.display='flex';">
+                {% endif %}
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h3>{{ name }}</h3>
+                <p>{{ email }}</p>
+            </div>
+        </div>
+
+        <div class="profile-details">
+            <div class="detail-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="detail-label" id="label-village">गांव:</span>
+                <span class="detail-value">{{ village }}</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-city"></i>
+                <span class="detail-label" id="label-district">जिला:</span>
+                <span class="detail-value">{{ district }}</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-map"></i>
+                <span class="detail-label" id="label-state">राज्य:</span>
+                <span class="detail-value">{{ state }}</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-phone"></i>
+                <span class="detail-label" id="label-phone">फोन:</span>
+                <span class="detail-value">{{ phone }}</span>
+            </div>
+            <div class="detail-item">
+                <i class="fas fa-seedling"></i>
+                <span class="detail-label" id="label-crops">फसलें:</span>
+                <span class="detail-value">{{ crops }}</span>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <a href="/dashboard" class="btn btn-secondary" id="btn-back">
+                <i class="fas fa-arrow-left"></i> 
+                <span>वापस जाएं</span>
+            </a>
+            <a href="/edit-profile" class="btn btn-primary" id="btn-edit">
+                <i class="fas fa-edit"></i> 
+                <span>प्रोफाइल संपादित करें</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let isHindi = true;
+
+        function toggleLanguage() {
+            const title = document.getElementById("title");
+            const langToggle = document.getElementById("langToggle");
+            const labelVillage = document.getElementById("label-village");
+            const labelDistrict = document.getElementById("label-district");
+            const labelState = document.getElementById("label-state");
+            const labelPhone = document.getElementById("label-phone");
+            const labelCrops = document.getElementById("label-crops");
+            const btnBack = document.getElementById("btn-back");
+            const btnEdit = document.getElementById("btn-edit");
+            
+            if (isHindi) {
+                title.innerText = "🌾 User Profile 🌾";
+                langToggle.innerText = "हिन्दी";
+                labelVillage.innerText = "Village:";
+                labelDistrict.innerText = "District:";
+                labelState.innerText = "State:";
+                labelPhone.innerText = "Phone:";
+                labelCrops.innerText = "Crops:";
+                btnBack.innerHTML = '<i class="fas fa-arrow-left"></i> <span>Back</span>';
+                btnEdit.innerHTML = '<i class="fas fa-edit"></i> <span>Edit Profile</span>';
+            } else {
+                title.innerText = "🌾 उपयोगकर्ता प्रोफाइल 🌾";
+                langToggle.innerText = "English";
+                labelVillage.innerText = "गांव:";
+                labelDistrict.innerText = "जिला:";
+                labelState.innerText = "राज्य:";
+                labelPhone.innerText = "फोन:";
+                labelCrops.innerText = "फसलें:";
+                btnBack.innerHTML = '<i class="fas fa-arrow-left"></i> <span>वापस जाएं</span>';
+                btnEdit.innerHTML = '<i class="fas fa-edit"></i> <span>प्रोफाइल संपादित करें</span>';
+            }
+            
+            isHindi = !isHindi;
+        }
+    </script>
+</body>
+</html>

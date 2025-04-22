@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>किसान साथी - हमारे बारे में</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #FFC107;
+            --secondary-dark: #FFA000;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #757575;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url("{{ url_for('static', filename='image/background.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            height: 120px;
+            width: auto;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-link {
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-link:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .user-greeting {
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-greeting i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .logout-btn {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Language Toggle Button */
+        .lang-toggle {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 10px;
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* About Page Content */
+        .about-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .about-title {
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .about-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .about-content {
+            color: var(--text-color);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .mission-box, .vision-box {
+            background: rgba(46, 125, 50, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .mission-box h3, .vision-box h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-top: 40px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border: 4px solid var(--primary);
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-name {
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            color: var(--secondary-dark);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .member-bio {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            color: var(--primary);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            color: var(--primary-dark);
+            transform: scale(1.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .user-info {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='image/logo1.png') }}" alt="FarmConnect Logo" class="logo">
+            <div class="user-info">
+                <a href="/profile" class="profile-link" title="View Profile">
+                    {% if profile_picture %}
+                        <img src="{{ url_for('uploaded_images', filename=profile_picture) }}" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    {% else %}
+                        <i class="fas fa-user"></i>
+                    {% endif %}
+                </a>
+                <div class="user-greeting" id="greeting">
+                    <i class="fas fa-seedling"></i> 
+                    <span id="greeting-text">नमस्ते, {{ name }}</span>
+                </div>
+                <button class="lang-toggle" id="langToggle">
+                    <span id="lang-text">English</span>
+                </button>
+                <a href="{{ url_for('logout') }}" class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> 
+                    <span id="logout-text">लॉगआउट</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h1 class="about-title" id="about-title">हमारे बारे में</h1>
+            <div class="about-content" id="about-content">
+                <p>किसान साथी एक अभिनव डिजिटल प्लेटफॉर्म है जो भारतीय किसानों को आधुनिक तकनीक और जानकारी से जोड़ता है। हमारा उद्देश्य किसानों को सशक्त बनाना और उनकी उत्पादकता बढ़ाना है।</p>
+                
+                <div class="mission-vision">
+                    <div class="mission-box">
+                        <h3 id="mission-title">हमारा मिशन</h3>
+                        <p id="mission-text">किसानों को सर्वोत्तम तकनीकी समाधान और जानकारी प्रदान करके भारतीय कृषि को आधुनिक बनाना।</p>
+                    </div>
+                    <div class="vision-box">
+                        <h3 id="vision-title">हमारी दृष्टि</h3>
+                        <p id="vision-text">एक ऐसा भारत बनाना जहां हर किसान डिजिटल रूप से सशक्त हो और सतत कृषि का अभ्यास करे।</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-section team-section">
+            <h2 class="about-title" id="team-title">हमारी टीम</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">अथर्व पाटिल</h3>
+                    <p class="member-role">डॉक्यूमेंटेशन और रिपोर्ट</p>
+                    <p class="member-bio">प्रोजेक्ट डॉक्यूमेंटेशन और रिपोर्टिंग में विशेषज्ञ</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">प्रणव चव्हाण</h3>
+                    <p class="member-role">फ्रंटएंड डेवलपर</p>
+                    <p class="member-bio">यूजर इंटरफेस और वेब डिज़ाइन में विशेषज्ञ</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">करण घाटगे</h3>
+                    <p class="member-role">आईडिया और सिस्टम डेवलपमेंट</p>
+                    <p class="member-bio">सिस्टम आर्किटेक्चर और प्रोजेक्ट प्लानिंग में विशेषज्ञ</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 class="member-name">आर्य कुलकर्णी</h3>
+                    <p class="member-role">बैकएंड डेवलपर</p>
+                    <p class="member-bio">सर्वर-साइड लॉजिक और डेटाबेस मैनेजमेंट में विशेषज्ञ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple debug to check if team members are rendered
+            const teamMembers = document.querySelectorAll('.team-member');
+            console.log('Number of team members found:', teamMembers.length);
+            
+            // Handle image loading errors
+            const images = document.querySelectorAll('.member-photo img');
+            images.forEach(img => {
+                img.onerror = function() {
+                    if (this.dataset.fallback) {
+                        this.src = this.dataset.fallback;
+                    }
+                };
+            });
+        });
+
+        const translations = {
+            en: {
+                aboutTitle: "About Us",
+                aboutContent: "Kisan Sathi is an innovative digital platform that connects Indian farmers with modern technology and information. Our goal is to empower farmers and increase their productivity.",
+                missionTitle: "Our Mission",
+                missionText: "To modernize Indian agriculture by providing farmers with the best technological solutions and information.",
+                visionTitle: "Our Vision",
+                visionText: "To create an India where every farmer is digitally empowered and practices sustainable agriculture.",
+                teamTitle: "Our Team",
+                greeting: "Hello, {{ name }}!",
+                logout: "Logout",
+                langText: "हिंदी",
+                teamMembers: [
+                    {
+                        name: "Atharva Patil",
+                        role: "Documentation and Reports",
+                        bio: "Expert in Project Documentation and Reporting"
+                    },
+                    {
+                        name: "Pranav Chavan",
+                        role: "Frontend Developer",
+                        bio: "Expert in User Interface and Web Design"
+                    },
+                    {
+                        name: "Karan Ghatge",
+                        role: "Idea and System Development",
+                        bio: "Expert in System Architecture and Project Planning"
+                    },
+                    {
+                        name: "Arya Kulkarni",
+                        role: "Backend Developer",
+                        bio: "Expert in Server-side Logic and Database Management"
+                    }
+                ]
+            },
+            hi: {
+                aboutTitle: "हमारे बारे में",
+                aboutContent: "किसान साथी एक अभिनव डिजिटल प्लेटफॉर्म है जो भारतीय किसानों को आधुनिक तकनीक और जानकारी से जोड़ता है। हमारा उद्देश्य किसानों को सशक्त बनाना और उनकी उत्पादकता बढ़ाना है।",
+                missionTitle: "हमारा मिशन",
+                missionText: "किसानों को सर्वोत्तम तकनीकी समाधान और जानकारी प्रदान करके भारतीय कृषि को आधुनिक बनाना।",
+                visionTitle: "हमारी दृष्टि",
+                visionText: "एक ऐसा भारत बनाना जहां हर किसान डिजिटल रूप से सशक्त हो और सतत कृषि का अभ्यास करे।",
+                teamTitle: "हमारी टीम",
+                greeting: "नमस्ते, {{ name }}!",
+                logout: "लॉग आउट",
+                langText: "English",
+                teamMembers: [
+                    {
+                        name: "अथर्व पाटिल",
+                        role: "डॉक्यूमेंटेशन और रिपोर्ट",
+                        bio: "प्रोजेक्ट डॉक्यूमेंटेशन और रिपोर्टिंग में विशेषज्ञ"
+                    },
+                    {
+                        name: "प्रणव चव्हाण",
+                        role: "फ्रंटएंड डेवलपर",
+                        bio: "यूजर इंटरफेस और वेब डिज़ाइन में विशेषज्ञ"
+                    },
+                    {
+                        name: "करण घाटगे",
+                        role: "आईडिया और सिस्टम डेवलपमेंट",
+                        bio: "सिस्टम आर्किटेक्चर और प्रोजेक्ट प्लानिंग में विशेषज्ञ"
+                    },
+                    {
+                        name: "आर्य कुलकर्णी",
+                        role: "बैकएंड डेवलपर",
+                        bio: "सर्वर-साइड लॉजिक और डेटाबेस मैनेजमेंट में विशेषज्ञ"
+                    }
+                ]
+            }
+        };
+
+        let currentLang = 'hi'; // Default language
+
+        function updateLanguage() {
+            document.getElementById('greeting-text').textContent = 
+                translations[currentLang].greeting.replace('{{ name }}', "{{ name }}");
+            document.getElementById('logout-text').textContent = translations[currentLang].logout;
+            document.getElementById('lang-text').textContent = translations[currentLang].langText;
+            
+            // Update about section
+            document.getElementById('about-title').textContent = translations[currentLang].aboutTitle;
+            document.getElementById('about-content').querySelector('p').textContent = translations[currentLang].aboutContent;
+            
+            // Update mission and vision
+            document.getElementById('mission-title').textContent = translations[currentLang].missionTitle;
+            document.getElementById('mission-text').textContent = translations[currentLang].missionText;
+            document.getElementById('vision-title').textContent = translations[currentLang].visionTitle;
+            document.getElementById('vision-text').textContent = translations[currentLang].visionText;
+            
+            // Update team section
+            document.getElementById('team-title').textContent = translations[currentLang].teamTitle;
+            
+            // Update team members
+            const teamMembers = document.querySelectorAll('.team-member');
+            teamMembers.forEach((member, index) => {
+                const data = translations[currentLang].teamMembers[index];
+                member.querySelector('.member-name').textContent = data.name;
+                member.querySelector('.member-role').textContent = data.role;
+                member.querySelector('.member-bio').textContent = data.bio;
+            });
+        }
+
+        document.getElementById('langToggle').addEventListener('click', () => {
+            currentLang = currentLang === 'hi' ? 'en' : 'hi';
+            document.documentElement.lang = currentLang;
+            updateLanguage();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLanguage();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Potato Farming Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    font-family: Poppins, sans-serif;
+    margin: 0;
+    background-color: #010101;
+    color: #eee;
+    overflow-x: hidden;
+}
+
+svg {
+    width: 25px;
+}
+
+header {
+    width: 1200px;
+    max-width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    grid-template-rows: 50px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+}
+
+.logo-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+    }
+
+    .logo-img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .logo-text {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .logo-text span {
+        color: #4CAF50;
+    }
+
+header .logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+header .menu {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* CSS Slider */
+.slider {
+    height: 100vh;
+    margin-top: -50px;
+    position: relative;
+}
+
+.slider .list .item {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: .5s;
+    display: flex;
+    align-items: center;
+}
+
+.slider .list .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: 1;
+}
+
+.slider .list .item::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2;
+}
+
+.slider .list .item .content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.slider .list .item .content h2 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem;
+    line-height: 1.2;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.slider .list .item .content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+    color: #f0f0f0;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0.4);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.slider .list .item.active {
+    opacity: 1;
+    z-index: 10;
+}
+
+.arrows {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.arrows button {
+    background-color: rgba(255,255,255,0.3);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrows button:hover {
+    background-color: rgba(255,255,255,0.7);
+    color: #000;
+    transform: scale(1.1);
+}
+
+.thumbnail {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    z-index: 1000;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.thumbnail .item {
+    width: 120px;
+    height: 80px;
+    filter: brightness(0.6);
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.thumbnail .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail .item .content {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.thumbnail .item.active {
+    filter: brightness(1.2);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 992px) {
+    .slider .list .item .content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .slider .list .item .content h2 {
+        font-size: 2rem;
+    }
+    
+    .slider .list .item .content p {
+        font-size: 1rem;
+    }
+    
+    .thumbnail {
+        bottom: 10px;
+    }
+    
+    .thumbnail .item {
+        width: 100px;
+        height: 70px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .slider .list .item .content h2 {
+        font-size: 1.8rem;
+    }
+    
+    .arrows {
+        right: 15px;
+    }
+    
+    .arrows button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .thumbnail {
+        justify-content: flex-start;
+        padding: 8px;
+    }
+    
+    .thumbnail .item {
+        width: 80px;
+        height: 60px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .slider .list .item .content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .slider .list .item .content p {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+    
+    .thumbnail {
+        bottom: 5px;
+    }
+    
+    .thumbnail .item {
+        width: 70px;
+        height: 50px;
+    }
+    
+    .thumbnail .item .content {
+        font-size: 0.7rem;
+    }
+}
+
+/* Animation for content */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slider .list .item.active .content h2,
+.slider .list .item.active .content p {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.slider .list .item.active .content p {
+    animation-delay: 0.3s;
+}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <a href="#" class="logo-container">
+      <img src="/static/image/logo1.png" alt="Kisaan Saathi Logo" class="logo-img" />
+      <div class="logo-text">Kisaan <span>Saathi</span></div>
+    </a>
+    <ul class="menu">
+      <li>Potato Farming: Complete Guide</li>
+    </ul>
+  </header>
+
+  <!-- Slider -->
+  <div class="slider">
+    <!-- List Items -->
+    <div class="list">
+      <div class="item active">
+        <img src="https://t3.ftcdn.net/jpg/13/22/66/48/240_F_1322664870_GclaLK9fdTq7gS1nK1dLZwXjHDLrauJp.jpg" />
+        <div class="content">
+          <h2>Overview</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🥔</span> <strong>Potato</strong> is the world's 4th largest food crop and a staple in Indian cuisine.<br><br>
+              <span class="bullet">•</span> India is the <strong>2nd largest producer</strong> globally (after China)<br>
+              <span class="bullet">•</span> Grown on <strong>2.1 million hectares</strong> annually<br>
+              <span class="bullet">•</span> Major producing states: UP, West Bengal, Bihar<br><br>
+              <span class="emoji">📊</span> <strong>Annual production</strong>: 50+ million tons<br>
+              <span class="emoji">⚖️</span> <strong>Productivity</strong>: 24 tons per hectare<br>
+              <span class="emoji">💰</span> <strong>Economic value</strong>: ₹50,000+ crore industry
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/10/45/25/44/240_F_1045254494_0onRsBuEAbT9JOhCuRMEJ30FJ0kjsUpR.jpg" />
+        <div class="content">
+          <h2>Climate & Soil</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🌡️</span> Ideal temperature: <strong>15-25°C</strong><br>
+              <span class="bullet">•</span> Tuber formation best at <strong>17-19°C</strong><br>
+              <span class="bullet">•</span> Frost damages plants below <strong>0°C</strong><br><br>
+              <span class="emoji">🌧️</span> <strong>Rainfall</strong>: 500-700 mm (well-distributed)<br><br>
+              <span class="emoji">🧱</span> <strong>Soil</strong>:<br>
+              <span class="bullet">•</span> Loamy/sandy loam with good drainage<br>
+              <span class="bullet">•</span> pH 5.2-6.4 (slightly acidic)<br><br>
+              <span class="emoji">🌱</span> <strong>Popular Varieties</strong>:<br>
+              <span class="bullet">•</span> Kufri Jyoti (disease resistant)<br>
+              <span class="bullet">•</span> Kufri Pukhraj (high yield)<br>
+              <span class="bullet">•</span> Kufri Chipsona (for chips)<br>
+              <span class="bullet">•</span> Kufri Himalini (for hills)
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/10/95/83/30/240_F_1095833073_7Evjf19sYgczPU2nd0yuzXubeAZNqwFY.jpg" />
+        <div class="content">
+          <h2>Planting & Irrigation</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">📅</span> <strong>Planting Seasons</strong>:<br>
+              <span class="bullet">•</span> Plains: Oct-Nov (rabi)<br>
+              <span class="bullet">•</span> Hills: March-April (spring)<br><br>
+              <span class="emoji">🌱</span> <strong>Seed Rate</strong>: 1.5-2 tons/acre (cut tubers)<br>
+              <span class="bullet">•</span> Certified disease-free seeds recommended<br><br>
+              <span class="emoji">💧</span> <strong>Irrigation</strong>:<br>
+              <span class="bullet">•</span> Critical stages: Germination, tuber formation<br>
+              <span class="bullet">•</span> 5-7 irrigations in total<br>
+              <span class="bullet">•</span> Stop irrigation 10-15 days before harvest
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/09/68/07/66/240_F_968076648_bDnDHj9U8xaodGnTpghXVg7DLW4zQfsH.jpg" />
+        <div class="content">
+          <h2>Fertilization & Care</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🧪</span> <strong>Fertilizer (per acre)</strong>:<br>
+              <span class="bullet">•</span> FYM: 15-20 tons<br>
+              <span class="bullet">•</span> N: 120-150 kg<br>
+              <span class="bullet">•</span> P: 60-80 kg<br>
+              <span class="bullet">•</span> K: 80-100 kg<br><br>
+              <span class="emoji">🌿</span> <strong>Weed Control</strong>:<br>
+              <span class="bullet">•</span> 2-3 manual weedings<br>
+              <span class="bullet">•</span> Earthing up after 30-45 days<br><br>
+              <span class="emoji">🛡️</span> <strong>Growth Regulators</strong>:<br>
+              <span class="bullet">•</span> CCC for vegetative control<br>
+              <span class="bullet">•</span> GA3 for seed treatment
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/13/96/46/05/240_F_1396460549_v6Kij1Nbvy0rqWVFuObrRnY4qVlQ8w4p.jpg" />
+        <div class="content">
+          <h2>Pests & Diseases</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🐛</span> <strong>Major Pests</strong>:<br>
+              <span class="bullet">•</span> Colorado potato beetle<br>
+              <span class="bullet">•</span> Aphids (virus vectors)<br>
+              <span class="bullet">•</span> Cutworms<br><br>
+              <span class="emoji">🦠</span> <strong>Diseases</strong>:<br>
+              <span class="bullet">•</span> Late blight (most destructive)<br>
+              <span class="bullet">•</span> Early blight<br>
+              <span class="bullet">•</span> Black scurf<br>
+              <span class="bullet">•</span> Viral diseases<br><br>
+              <span class="emoji">💊</span> <strong>Control</strong>:<br>
+              <span class="bullet">•</span> Crop rotation (3-4 years)<br>
+              <span class="bullet">•</span> Resistant varieties<br>
+              <span class="bullet">•</span> Fungicide sprays
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/10/31/75/03/240_F_1031750365_G2shQS1I0krbsBURbm0SPiijrmt1yciN.jpg" />
+        <div class="content">
+          <h2>Harvest & Storage</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">⏱️</span> <strong>Maturity Signs</strong>:<br>
+              <span class="bullet">•</span> Yellowing of leaves<br>
+              <span class="bullet">•</span> Skin doesn't peel easily<br>
+              <span class="bullet">•</span> 90-120 days after planting<br><br>
+              <span class="emoji">🔄</span> <strong>Harvest Process</strong>:<br>
+              <span class="bullet">•</span> Stop irrigation 10-15 days prior<br>
+              <span class="bullet">•</span> Manual digging or mechanical harvesters<br>
+              <span class="bullet">•</span> Cure for 10-15 days before storage<br><br>
+              <span class="emoji">❄️</span> <strong>Storage</strong>:<br>
+              <span class="bullet">•</span> Cold storage at 2-4°C with 85-90% RH<br>
+              <span class="bullet">•</span> Traditional methods: straw pits, ventilated stores
+            </p>
+            <div class="video-container">
+              <iframe width="100%" height="315" src="https://www.youtube.com/embed/UT8I0Wdk0b0?si=WeBvjZhfICkfdbmH"  
+                title="Potato Farming Techniques" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button Arrows -->
+    <div class="arrows">
+      <button id="prev"><</button>
+      <button id="next">></button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnail">
+      <div class="item active">
+        <img src="https://t3.ftcdn.net/jpg/13/22/66/48/240_F_1322664870_GclaLK9fdTq7gS1nK1dLZwXjHDLrauJp.jpg" />
+        <div class="content">Overview</div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/10/45/25/44/240_F_1045254494_0onRsBuEAbT9JOhCuRMEJ30FJ0kjsUpR.jpg" />
+        <div class="content">Climate</div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/10/95/83/30/240_F_1095833073_7Evjf19sYgczPU2nd0yuzXubeAZNqwFY.jpg" />
+        <div class="content">Planting</div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/09/68/07/66/240_F_968076648_bDnDHj9U8xaodGnTpghXVg7DLW4zQfsH.jpg" />
+        <div class="content">Care</div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/13/96/46/05/240_F_1396460549_v6Kij1Nbvy0rqWVFuObrRnY4qVlQ8w4p.jpg" />
+        <div class="content">Pests</div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/10/31/75/03/240_F_1031750365_G2shQS1I0krbsBURbm0SPiijrmt1yciN.jpg" />
+        <div class="content">Harvest</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+let items = document.querySelectorAll('.slider .list .item');
+let next = document.getElementById('next');
+let prev = document.getElementById('prev');
+let thumbnails = document.querySelectorAll('.thumbnail .item');
+
+// config param
+let countItem = items.length;
+let itemActive = 0;
+
+// event next click
+next.onclick = function(){
+    itemActive = itemActive + 1;
+    if(itemActive >= countItem){
+        itemActive = 0;
+    }
+    showSlider();
+}
+
+// event prev click
+prev.onclick = function(){
+    itemActive = itemActive - 1;
+    if(itemActive < 0){
+        itemActive = countItem - 1;
+    }
+    showSlider();
+}
+
+// ❌ Removed auto-run slider
+// let refreshInterval = setInterval(() => {
+//     next.click();
+// }, 5000);
+
+function showSlider(){
+    // remove item active old
+    let itemActiveOld = document.querySelector('.slider .list .item.active');
+    let thumbnailActiveOld = document.querySelector('.thumbnail .item.active');
+    itemActiveOld.classList.remove('active');
+    thumbnailActiveOld.classList.remove('active');
+
+    // active new item
+    items[itemActive].classList.add('active');
+    thumbnails[itemActive].classList.add('active');
+    setPositionThumbnail();
+
+    // ❌ Removed auto time reset
+    // clearInterval(refreshInterval);
+    // refreshInterval = setInterval(() => {
+    //     next.click();
+    // }, 5000);
+}
+  </script>
+</body>
+</html>

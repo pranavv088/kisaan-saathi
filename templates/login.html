@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>किसान साथी - लॉगिन</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('{{ url_for("static", filename="image/background.jpg") }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 350px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1.5s ease-in-out;
+      position: relative;
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      color: #4CAF50;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      font-size: 0.95rem;
+      color: #333;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 25px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #388E3C;
+      transform: scale(1.03);
+    }
+
+    .flash-message {
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .flash-message.danger {
+      color: red;
+    }
+
+    .flash-message.success {
+      color: green;
+    }
+
+    .lang-toggle {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: transparent;
+      border: 1px solid #4CAF50;
+      color: #4CAF50;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lang-toggle:hover {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .register-link {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .register-link a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    .profile-link {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      color: #4CAF50;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .profile-link:hover {
+      transform: scale(1.1);
+      color: #388E3C;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="form-container">
+    <!-- Language Toggle Inside Container -->
+    <button class="lang-toggle" onclick="toggleLanguage()">English</button>
+    
+    <!-- Profile Icon with Link -->
+    <a href="/profile" class="profile-link" id="profile-link" title="प्रोफाइल देखें">👤</a>
+
+    <img src="/static/image/logo1.png" alt="Kisan Sathi Logo" class="logo">
+
+    <h2 id="form-title">🌾 किसान साथी - लॉगिन 🌾</h2>
+
+    <form method="POST">
+      <label for="email" id="label-email">📧 ईमेल:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password" id="label-password">🔒 पासवर्ड:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit" id="submit-btn">🔐 लॉगिन करें</button>
+    </form>
+
+    <p class="register-link" id="register-text">खाता नहीं है? <a href="/register">यहां पंजीकरण करें</a></p>
+  </div>
+
+  <script>
+    let isHindi = true;
+
+    function toggleLanguage() {
+      const formTitle = document.getElementById("form-title");
+      const labelEmail = document.getElementById("label-email");
+      const labelPassword = document.getElementById("label-password");
+      const submitBtn = document.getElementById("submit-btn");
+      const toggleBtn = document.querySelector(".lang-toggle");
+      const registerText = document.getElementById("register-text");
+      const profileLink = document.getElementById("profile-link");
+
+      if (isHindi) {
+        formTitle.innerText = "🌾 Kisan Sathi - Login 🌾";
+        labelEmail.innerText = "📧 Email:";
+        labelPassword.innerText = "🔒 Password:";
+        submitBtn.innerText = "🔐 Login";
+        toggleBtn.innerText = "हिन्दी";
+        registerText.innerHTML = "Don't have an account? <a href=\"/register\">Register here</a>";
+        profileLink.title = "View Profile";
+      } else {
+        formTitle.innerText = "🌾 किसान साथी - लॉगिन 🌾";
+        labelEmail.innerText = "📧 ईमेल:";
+        labelPassword.innerText = "🔒 पासवर्ड:";
+        submitBtn.innerText = "🔐 लॉगिन करें";
+        toggleBtn.innerText = "English";
+        registerText.innerHTML = "खाता नहीं है? <a href=\"/register\">यहां पंजीकरण करें</a>";
+        profileLink.title = "प्रोफाइल देखें";
+      }
+
+      isHindi = !isHindi;
+    }
+  </script>
+</body>
+</html> 

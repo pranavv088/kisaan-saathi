@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New Era of Agriculture</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url('{{ url_for("static", filename="image/background.jpg") }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .container {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #774c2d;
+    }
+
+    .highlight {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .subtext {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .button {
+      flex: 1;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 0;
+      font-size: 0.9rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out, transform 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .button:hover {
+      background: #388E3C;
+      transform: scale(1.05);
+    }
+
+    .button.secondary {
+      background: #774c2d;
+    }
+
+    .button.secondary:hover {
+      background: #5a3b22;
+    }
+
+    .features-btn {
+      width: 100%;
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+
+    .background img {
+      width: 100%;
+      border-radius: 15px;
+      margin-top: 20px;
+      filter: brightness(0.8);
+      animation: zoomIn 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(1.05);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="content">
+      <img src="{{ url_for('static', filename='image/logo1.png') }}" alt="Logo" class="logo" />
+      <h1><span class="highlight">THE NEW ERA OF</span> AGRICULTURE</h1>
+      <p class="subtext">Sustainable farming solutions for a better tomorrow.</p>
+
+      <div class="button-container">
+        <a href="{{ url_for('login') }}" class="button">
+          Login
+        </a>
+        <a href="{{ url_for('register') }}" class="button secondary">
+          Register
+        </a>
+      </div>
+
+      <a href="{{ url_for('features') }}">
+        <button class="button features-btn">Explore Features</button>
+      </a>
+    </div>
+
+    <div class="background">
+      <img src="{{ url_for('static', filename='image/wheat.jpg') }}" alt="Wheat Field" />
+    </div>
+  </div>
+</body>
+</html>
+  

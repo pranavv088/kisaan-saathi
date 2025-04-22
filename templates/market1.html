@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kishan Sathi - Farmers E-Commerce</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FFC107;
+            --dark: #2E7D32;
+            --light: #F1F8E9;
+            --soil: #5D4037;
+            --sale: #E53935;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f7;
+            color: #333;
+        }
+        
+        /* Header with Festive Banner */
+        .festive-banner {
+            background: linear-gradient(45deg, #E53935, #FF7043);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .festive-banner::before {
+            content: "🎉";
+            position: absolute;
+            left: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .festive-banner::after {
+            content: "🎉";
+            position: absolute;
+            right: 20px;
+            animation: float 3s ease-in-out infinite 1s;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Navigation */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        nav ul li a i {
+            margin-right: 5px;
+        }
+        /* In both index.html and irrigation.html */
+nav ul li a.active {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Make category cards fully clickable */
+.category-card {
+    cursor: pointer;
+}
+.category-card a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+        
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--sale);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section with Festive Offer */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .festive-offer {
+            background-color: var(--secondary);
+            color: #333;
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3d8b40;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+            margin-left: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        /* Categories Section */
+        .categories {
+            padding: 3rem 1rem;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            color: #666;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .category-img {
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-card:hover .category-img img {
+            transform: scale(1.1);
+        }
+        
+        .category-content {
+            padding: 1.5rem 1rem;
+        }
+        
+        .category-content h3 {
+            margin-bottom: 0.5rem;
+        }
+        /* Category Link Styling */
+.category-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.3s;
+}
+
+.category-link:hover .category-card {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+        /* Featured Products with Festive Sale */
+        .featured-products {
+            padding: 3rem 1rem;
+            background-color: #f9f9f7;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--sale);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .product-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
+        }
+        
+        .quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover .quick-view {
+            bottom: 0;
+        }
+        
+        .product-content {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            color: var(--primary);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            height: 50px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .current-price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .discount {
+            color: var(--sale);
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-grow: 1;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #3d8b40;
+        }
+        
+        /* Seed Varieties Section */
+        .seed-varieties {
+            padding: 3rem 1rem;
+            background-color: white;
+        }
+        
+        .seed-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .seed-tab {
+            padding: 0.5rem 1.5rem;
+            background-color: var(--light);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0.3rem;
+            border-radius: 50px;
+        }
+        
+        .seed-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .seed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+       
+    
+        
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 1rem;
+                display: block;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="static/image/logo1.png" alt="AgriShop Logo">
+                <div class="logo-text">
+                    <h1>Kisaan<span>Shop</span></h1>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/seeds"><i class="fas fa-seedling"></i> Seeds</a></li>
+                    <li><a href="/tools"><i class="fas fa-tools"></i> Tools</a></li>
+                    <li><a href="/irrigation"><i class="fas fa-irrigation"></i> Irrigation</a></li>
+                 
+                    
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="festive-offer">Festive Special - 50% Off</div>
+            <h1>Premium Seeds & Farming Supplies</h1>
+            <p>Get the best quality seeds, pesticides, and fertilizers for your agricultural needs at unbeatable prices this festive season.</p>
+            <div>
+                <a href="#sale" class="btn btn-primary">Shop Sale</a>
+            </div>
+        </div>
+    </section>
+
+   <!-- Categories Section -->
+<section class="categories">
+    <div class="section-title">
+        <h2>Our Product Categories</h2>
+        <p>Everything a farmer needs in one place</p>
+    </div>
+    <div class="categories-grid">
+        <!-- Seeds Category - Now clickable -->
+        <a href="/seeds" class="category-link">
+            <div class="category-card">
+                <div class="category-img">
+                    <img src="/static/image/image1.jpg" alt="Seeds">
+                </div>
+                <div class="category-content">
+                    <h3>Seeds</h3>
+                    <p>High yield varieties</p>
+                </div>
+            </div>
+        </a>
+        
+        <!-- Farming Tools Category Card -->
+<div class="category-card">
+    <a href="/tools" style="text-decoration: none; color: inherit;">
+        <div class="category-img">
+            <img src="/static/image/image2.jpeg" alt="Farming Tools">
+        </div>
+        <div class="category-content">
+            <h3>Farming Tools</h3>
+            <p>Quality equipment</p>
+        </div>
+    </a>
+</div>
+        <!-- Irrigation Category -->
+        <div class="category-card">
+            <a href="/irrigation"style="text-decoration: none;color:inherit;">
+            <div class="category-img">
+                <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="Irrigation">
+            </div>
+            <div class="category-content">
+                <h3>Irrigation</h3>
+                <p>Water saving solutions</p>
+            </div>
+            </a>
+        </div>
+    </div>
+</section>
+    <!-- Featured Products (Festive Sale) -->
+    <section class="featured-products" id="sale">
+        <div class="section-title">
+            <h2>Festive Season Specials</h2>
+            <p>Limited time offers on our best-selling products</p>
+        </div>
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-badge">50% OFF</div>
+                <div class="product-img">
+                    <img src="https://images.unsplash.com/photo-1582284540020-8acbe03f4924?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Tomato Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">SEEDS</span>
+                    <h3 class="product-title">Premium Tomato Seeds - Hybrid F1 Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹199</span>
+                        <span class="original-price">₹399</span>
+                        <span class="discount">50% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://as1.ftcdn.net/v2/jpg/05/38/85/44/1000_F_538854460_GuyTdYM7pP9c0SeBHMdhe0kJKqHB6SAJ.jpg">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-badge">30% OFF</div>
+                <div class="product-img">
+                    <img src="/static/image/organic.jpeg" alt="Fertilizer">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">FERTILIZER</span>
+                    <h3 class="product-title">Organic NPK Fertilizer 5kg Pack</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹599</span>
+                        <span class="original-price">₹849</span>
+                        <span class="discount">30% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://as1.ftcdn.net/v2/jpg/05/38/85/44/1000_F_538854460_GuyTdYM7pP9c0SeBHMdhe0kJKqHB6SAJ.jpg">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-badge">40% OFF</div>
+                <div class="product-img">
+                    <img src="/static/image/neem.webp" alt="Pesticide">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">PESTICIDE</span>
+                    <h3 class="product-title">Neem-Based Organic Pesticide 1L</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹349</span>
+                        <span class="original-price">₹599</span>
+                        <span class="discount">40% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://as1.ftcdn.net/v2/jpg/05/38/85/44/1000_F_538854460_GuyTdYM7pP9c0SeBHMdhe0kJKqHB6SAJ.jpg">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-badge">25% OFF</div>
+                <div class="product-img">
+                    <img src="/static/image/chilii.jpeg" alt="Chili Seeds">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">SEEDS</span>
+                    <h3 class="product-title">Hybrid Chili Seeds - Hot Variety</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹179</span>
+                        <span class="original-price">₹249</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <a href="https://as1.ftcdn.net/v2/jpg/05/38/85/44/1000_F_538854460_GuyTdYM7pP9c0SeBHMdhe0kJKqHB6SAJ.jpg">
+                            <button class="add-to-cart">Add to Cart</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    
+    <script>
+        // Simple mobile menu toggle functionality
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        });
+        
+        // Simple tab functionality for seed varieties
+        const tabs = document.querySelectorAll('.seed-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

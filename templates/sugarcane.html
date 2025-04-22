@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugarcane Farming Guide | Kisan Saathi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        body {
+            font-family: Poppins, sans-serif;
+            margin: 0;
+            background-color: #010101;
+            color: #eee;
+        }
+
+        svg {
+            width: 25px;
+        }
+
+        header {
+            width: 1200px;
+            max-width: 90%;
+            margin: auto;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            grid-template-rows: 80px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+            gap: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 150px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        header .menu {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-weight: 500;
+        }
+
+        /* CSS Slider */
+        .slider {
+            height: 100vh;
+            margin-top: -80px;
+            position: relative;
+        }
+
+        .slider .list .item {
+            position: absolute;
+            inset: 0 0 0 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: .5s;
+        }
+
+        .slider .list .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider .list .item::after {
+            content: '';
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background-image: linear-gradient(to top, #000 40%, transparent);
+        }
+
+        .slider .list .item .content {
+            position: absolute;
+            left: 10%;
+            top: 20%;
+            width: 500px;
+            max-width: 80%;
+            z-index: 1;
+        }
+
+        .slider .list .item .content p:nth-child(1) {
+            text-transform: uppercase;
+            letter-spacing: 10px;
+        }
+
+        .slider .list .item .content h2 {
+            font-size: 50px;
+            margin: 0;
+        }
+
+        .slider .list .item.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        @keyframes showContent {
+            to {
+                transform: translateY(0);
+                filter: blur(0);
+                opacity: 1;
+            }
+        }
+
+        .slider .list .item.active p:nth-child(1),
+        .slider .list .item.active h2,
+        .slider .list .item.active p:nth-child(3) {
+            transform: translateY(30px);
+            filter: blur(20px);
+            opacity: 0;
+            animation: showContent .5s .7s ease-in-out 1 forwards;
+        }
+
+        .arrows {
+            position: absolute;
+            top: 30%;
+            right: 50px;
+            z-index: 100;
+        }
+
+        .arrows button {
+            background-color: #eee5;
+            border: none;
+            font-family: monospace;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            font-size: x-large;
+            color: #eee;
+            transition: .5s;
+            cursor: pointer;
+        }
+
+        .arrows button:hover {
+            background-color: #eee;
+            color: black;
+        }
+
+        .thumbnail {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            z-index: 1000;
+            overflow-x: auto;
+        }
+
+        .thumbnail .item {
+            text-align: center;
+            width: 150px;
+            height: 220px;
+            filter: brightness(.5);
+            transition: .5s;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .thumbnail .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .thumbnail .item .content {
+            position: absolute;
+            inset: auto 10px 10px 10px;
+            color: white;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .thumbnail::-webkit-scrollbar {
+            width: 0;
+            height: 5px;
+        }
+
+        .thumbnail::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        .thumbnail .item.active {
+            filter: brightness(1.5);
+        }
+
+        @media screen and (max-width: 678px) {
+            header {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            .logo-container {
+                justify-content: center;
+            }
+
+            .thumbnail {
+                justify-content: start;
+                padding: 10px;
+            }
+
+            .slider .list .item .content h2 {
+                font-size: 30px;
+            }
+
+            .arrows {
+                top: 20%;
+                right: 20px;
+            }
+
+            .thumbnail .item {
+                width: 100px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- header -->
+    <header>
+        <div class="logo-container">
+            <img src="/static/image/logo1.png" alt="Kisan Saathi Logo" class="logo-img">
+            <div class="logo-text">KISAN SAATHI</div>
+        </div>
+        <ul class="menu">
+            <li>Sugarcane Farming: Planting, Care & Harvesting Guide</li>
+        </ul>
+        <div class="search">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- slider -->
+    <div class="slider">
+        <!-- list Items -->
+        <div class="list">
+            <div class="item active">
+                <img src="https://t4.ftcdn.net/jpg/13/51/88/85/240_F_1351888586_jP6bUlEVu3yxWvP2ZnmY6adkAdgDDVVx.jpg" alt="Sugarcane field overview">
+                <div class="content">
+                    <p>Overview & Production</p>
+                    <h2>Overview & Production</h2>
+                    <p>
+                        Sugarcane is India's primary sugar source, making it a vital cash crop. India is the world's largest consumer and second-largest producer after Brazil.
+                        Around 280,000 farmers cultivate sugarcane on 440,000 acres, supporting over 110 million people in the sugar industry.
+                        Total cultivation: 3.93 million hectares; Annual production: 170 metric tons; Productivity: 67 tons per hectare.
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://t4.ftcdn.net/jpg/08/94/71/51/240_F_894715134_bINJALX5RXMlbPpa7iNiasVIdyrH9IhQ.jpg" alt="Sugarcane climate and soil">
+                <div class="content">
+                    <p>Climate & Soil</p>
+                    <h2>Climate, Soil & Varieties</h2>
+                    <p>Sugarcane thrives in warm, humid climates; growth halts above 50°C and slows below 20°C.
+                        Optimal rainfall: 750–1,200 mm; excessive rain lowers juice quality.
+                        Prefers medium-heavy soils, but lighter soils work with proper irrigation.
+                        Popular varieties: Co 419, Co740, Co7219 (Sanjivan), etc.
+                        High-quality seed treatment prevents diseases.
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://t3.ftcdn.net/jpg/11/39/75/34/240_F_1139753497_ngWOP7KQUsxYrjVef1CJ5LuzoDzpYN7q.jpg" alt="Sugarcane planting">
+                <div class="content">
+                    <p>Planting Guide</p>
+                    <h2>Planting & Irrigation</h2>
+                    <p>
+                        Planting seasons: Suru (Jan-Feb), Ad Shali (Jul-Aug), Pre-seasonal (Oct-Nov).
+                        Fertilization includes organic manure, ammonium sulfate, or oil cakes per seasonal needs.
+                        Water needs: 2,000–2,500 mm; critical phases: germination & maturity.
+                        Irrigation: Weekly during formative stages; mulching reduces evaporation
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://as2.ftcdn.net/jpg/13/12/61/95/1000_F_1312619564_Sxc397M9rUOwvymMHnZfz2nDesibk7ux.jpg" alt="Sugarcane crop care">
+                <div class="content">
+                    <p>Crop Care</p>
+                    <h2>Crop Care & Pest Control</h2>
+                    <p>
+                        Weeding: Done 3–4 weeks after planting; final earthing-up before monsoon rains.
+                        Tying canes prevents lodging from strong winds.
+                        Major pests: Termites & shoot borers.
+                        Diseases: Red rot & whip smut; local agricultural experts offer control measures.
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://t3.ftcdn.net/jpg/12/95/12/12/240_F_1295121200_HLZ6Pqjbxn5CLHCLErpdCd3uC3DyLFRW.jpg" alt="Sugarcane harvesting">
+                <div class="content">
+                    <p>Harvesting</p>
+                    <h2>Harvesting Process</h2>
+                    <p>
+                        Maturity signs: Fewer green leaves on top; refractometer reading of 20 indicates readiness.
+                        Small Mill Test (SMT): Cutting 10 canes, crushing them, and lab-testing for purity & CCS %.
+                        Harvesting begins: November 1st, lasting 150 days; done per factory agreements.
+                    </p>
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://as1.ftcdn.net/v2/jpg/11/80/26/80/1000_F_1180268054_uoizInhGruIAAlMLybMivwx5770OWVGd.jpg" alt="Sugarcane mechanization">
+                <div class="content">
+                    <p>Mechanization</p>
+                    <h2>Mechanization & Yield Expectations</h2>
+                    <p>Modern harvesters: Use rotating knives, trim tops, and remove excess foliage with extraction fans.
+                        Cut into 12-inch "bullets", then transported via wagons.
+                        Yield:
+                        Commercial crop: 100 tons/hectare (11–12-month-old plants).
+                        Suru crop: 170 tons/hectare.
+                        Adali Pre-seasonal crop: 120 tons/hectare.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- button arrows -->
+        <div class="arrows">
+            <button id="prev"><</button>
+            <button id="next">></button>
+        </div>
+        <!-- thumbnail -->
+        <div class="thumbnail">
+            <div class="item active">
+                <img src="https://t4.ftcdn.net/jpg/13/51/88/85/240_F_1351888586_jP6bUlEVu3yxWvP2ZnmY6adkAdgDDVVx.jpg" alt="Overview">
+                <div class="content">
+                    Step-1
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://t4.ftcdn.net/jpg/08/94/71/51/240_F_894715134_bINJALX5RXMlbPpa7iNiasVIdyrH9IhQ.jpg" alt="Climate">
+                <div class="content">
+                    Step-2
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://t3.ftcdn.net/jpg/11/39/75/34/240_F_1139753497_ngWOP7KQUsxYrjVef1CJ5LuzoDzpYN7q.jpg" alt="Planting">
+                <div class="content">
+                    Step-3
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://as2.ftcdn.net/jpg/13/12/61/95/1000_F_1312619564_Sxc397M9rUOwvymMHnZfz2nDesibk7ux.jpg" alt="Crop Care">
+                <div class="content">
+                    Step-4
+                </div>
+            </div>
+            <div class="item">             
+                <img src="https://t3.ftcdn.net/jpg/12/95/12/12/240_F_1295121200_HLZ6Pqjbxn5CLHCLErpdCd3uC3DyLFRW.jpg" alt="Harvesting">
+                <div class="content">
+                    Step-5
+                </div>
+            </div>
+            <div class="item">
+                <img src="https://as1.ftcdn.net/v2/jpg/11/80/26/80/1000_F_1180268054_uoizInhGruIAAlMLybMivwx5770OWVGd.jpg" alt="Mechanization">
+                <div class="content">
+                    Step-6
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let items = document.querySelectorAll('.slider .list .item');
+        let next = document.getElementById('next');
+        let prev = document.getElementById('prev');
+        let thumbnails = document.querySelectorAll('.thumbnail .item');
+
+        // config param
+        let countItem = items.length;
+        let itemActive = 0;
+
+        // event next click
+        next.onclick = function(){
+            itemActive = itemActive + 1;
+            if(itemActive >= countItem){
+                itemActive = 0;
+            }
+            showSlider();
+        }
+
+        // event prev click
+        prev.onclick = function(){
+            itemActive = itemActive - 1;
+            if(itemActive < 0){
+                itemActive = countItem - 1;
+            }
+            showSlider();
+        }
+
+        // Auto-run slider (optional - uncomment if needed)
+        // let refreshInterval = setInterval(() => {
+        //     next.click();
+        // }, 5000);
+
+        function showSlider(){
+            // remove item active old
+            let itemActiveOld = document.querySelector('.slider .list .item.active');
+            let thumbnailActiveOld = document.querySelector('.thumbnail .item.active');
+            itemActiveOld.classList.remove('active');
+            thumbnailActiveOld.classList.remove('active');
+
+            // active new item
+            items[itemActive].classList.add('active');
+            thumbnails[itemActive].classList.add('active');
+            setPositionThumbnail();
+
+            // clearInterval(refreshInterval);
+            // refreshInterval = setInterval(() => {
+            //     next.click();
+            // }, 5000);
+        }
+
+        function setPositionThumbnail () {
+            let thumbnailActive = document.querySelector('.thumbnail .item.active');
+            let rect = thumbnailActive.getBoundingClientRect();
+            if (rect.left < 0 || rect.right > window.innerWidth) {
+                thumbnailActive.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+            }
+        }
+
+        // click thumbnail
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
+                itemActive = index;
+                showSlider();
+            })
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if(e.keyCode === 37) {
+                prev.click();
+            } else if(e.keyCode === 39) {
+                next.click();
+            }
+        });
+    </script>
+</body>
+</html>

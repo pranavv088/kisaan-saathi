@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                {% if developer.profile_picture %}
+                <img src="{{ developer.profile_picture }}" class="card-img-top" alt="{{ developer.name }}">
+                {% else %}
+                <img src="/static/images/default-profile.png" class="card-img-top" alt="{{ developer.name }}">
+                {% endif %}
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ developer.name }}</h2>
+                    <p class="card-text"><strong>Role:</strong> {{ developer.role }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">About</h3>
+                    <p class="card-text">{{ developer.bio or "No bio available" }}</p>
+                    
+                    <h3 class="card-title mt-4">Contributions</h3>
+                    <p class="card-text">{{ developer.contributions or "No contributions listed" }}</p>
+                    
+                    <h3 class="card-title mt-4">Contact</h3>
+                    <p class="card-text">
+                        {% if developer.email %}
+                        <strong>Email:</strong> {{ developer.email }}<br>
+                        {% endif %}
+                        {% if developer.linkedin %}
+                        <strong>LinkedIn:</strong> <a href="{{ developer.linkedin }}" target="_blank">{{ developer.linkedin }}</a><br>
+                        {% endif %}
+                        {% if developer.github %}
+                        <strong>GitHub:</strong> <a href="{{ developer.github }}" target="_blank">{{ developer.github }}</a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kisaanShop - Irrigation Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #FFC107;
+            --dark: #2E7D32;
+            --light: #F1F8E9;
+            --water: #2196F3;
+            --sale: #E53935;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f7;
+            color: #333;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.5rem;
+            color: var(--dark);
+        }
+        
+        .logo-text span {
+            color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        nav  li a:hover {
+            color: var(--primary);
+        }
+        
+        nav ul li a i {
+            margin-right: 5px;
+        }\/* In both index.html and irrigation.html */
+nav  li a.active {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Make category cards fully clickable */
+.category-card {
+    cursor: pointer;
+}
+.category-card a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+        
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--sale);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1620744875566-15e5d3005b95?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--water);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0b7dda;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Irrigation Systems Section */
+        .irrigation-systems {
+            padding: 3rem 1rem;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            color: #666;
+        }
+        
+        .system-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .system-tab {
+            padding: 0.5rem 1.5rem;
+            background-color: var(--light);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .system-tab.active {
+            background-color: var(--water);
+            color: white;
+        }
+        
+        /* Products Section */
+        .products {
+            padding: 3rem 1rem;
+            background-color: #f9f9f7;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--sale);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .product-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
+        }
+        
+        .quick-view {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover .quick-view {
+            bottom: 0;
+        }
+        
+        .product-content {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            color: var(--water);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            height: 50px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .current-price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .discount {
+            color: var(--sale);
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .add-to-cart {
+            background-color: var(--water);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-grow: 1;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #0b7dda;
+        }
+        
+        .wishlist {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .wishlist:hover, .wishlist.active {
+            color: var(--sale);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/static/image/logo1.png" alt="AgriShop Logo">
+                <div class="logo-text">
+                    <h1>kisaan<span>Shop</span></h1>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/index"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="/seeds"><i class="fas fa-seedling"></i> Seeds</a></li>
+                    <li><a href="/tools"><i class="fas fa-tools"></i> Tools</a></li>
+                    <li><a href="/irrigation"><i class="fas fa-irrigation"></i> Irrigation</a></li>
+                  
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Smart Irrigation Solutions</h1>
+            <p>Water-efficient systems for maximum crop yield with minimum water usage</p>
+            <a href="#products" class="btn btn-primary">View Systems</a>
+        </div>
+    </section>
+
+    <!-- Irrigation Systems -->
+    <section class="irrigation-systems">
+        <div class="section-title">
+            <h2>Irrigation System Types</h2>
+            <p>Choose the perfect system for your farming needs</p>
+        </div>
+        
+        <div class="system-tabs">
+            <button class="system-tab active">All Systems</button>
+        
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="section-title">
+            <h2>Featured Irrigation Products</h2>
+            <p>High-efficiency water solutions for modern farming</p>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Drip Irrigation Kit -->
+            <div class="product-card">
+                <div class="product-badge">BESTSELLER</div>
+                <div class="product-img">
+                    <img src="data:image/jpeg;base64,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" alt="Drip Irrigation Kit">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">DRIP IRRIGATION</span>
+                    <h3 class="product-title">Complete Drip Irrigation Kit (1 Acre)</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹12,999</span>
+                        <span class="original-price">₹15,999</span>
+                        <span class="discount">19% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sprinkler System -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="data:image/jpeg;base64,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" alt="Sprinkler System">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">SPRINKLER SYSTEM</span>
+                    <h3 class="product-title">Rotary Sprinkler Irrigation System</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹18,499</span>
+                        <span class="original-price">₹22,999</span>
+                        <span class="discount">20% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Solar Water Pump -->
+            <div class="product-card">
+                <div class="product-badge">NEW</div>
+                <div class="product-img">
+                    <img src="https://static.wixstatic.com/media/94281e_70cd1db412cf47d388c4947bed42d62f~mv2.png/v1/fill/w_592,h_592,al_c,lg_1,q_85,enc_avif,quality_auto/94281e_70cd1db412cf47d388c4947bed42d62f~mv2.png" alt="Solar Water Pump">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">SOLAR PUMP</span>
+                    <h3 class="product-title">5HP Solar Water Pump with Controller</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹54,999</span>
+                        <span class="original-price">₹64,999</span>
+                        <span class="discount">15% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center Pivot System -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://tiimg.tistatic.com/fp/1/002/039/center-pivot-irrigation-system-604.jpg" alt="Center Pivot System">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">CENTER PIVOT</span>
+                    <h3 class="product-title">Automatic Center Pivot Irrigation System</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹2,49,999</span>
+                        <span class="original-price">₹2,99,999</span>
+                        <span class="discount">17% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Drip Tape -->
+            <div class="product-card">
+                <div class="product-badge">LIMITED</div>
+                <div class="product-img">
+                    <img src="https://rukminim2.flixcart.com/image/128/128/l0r1j0w0/drip-irrigation-kit/u/k/y/490-laser-drip-16-mm-5-mil-45-cm-dripper-spacing-pack-of-1-roll-original-imagcgpsmyeufcx6.jpeg?q=70&crop=false" alt="Drip Tape">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">DRIP IRRIGATION</span>
+                    <h3 class="product-title">8mm Drip Irrigation Tape (500m Roll)</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹1,799</span>
+                        <span class="original-price">₹2,299</span>
+                        <span class="discount">22% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Irrigation Timer -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQba513_9NtkW_HcjX51rkXeH7H9aRMedp2blWmwPqLDoq90IFvFCyxvXAZhB55nKTg3B_zERIJNhcxrsmj2nCrLvM3do-BauO5z6b4gbO7qvmvdgLl1qAf4Q" alt="Irrigation Timer">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">ACCESSORIES</span>
+                    <h3 class="product-title">Digital Irrigation Timer Controller</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹3,499</span>
+                        <span class="original-price">₹4,199</span>
+                        <span class="discount">17% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rain Gun -->
+            <div class="product-card">
+                <div class="product-badge">NEW</div>
+                <div class="product-img">
+                    <img src="https://aqua-agro.com/cdn/shop/collections/14.jpg?v=1701493678&width=400" alt="Rain Gun">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">SPRINKLER SYSTEM</span>
+                    <h3 class="product-title">Heavy Duty Rain Gun Sprinkler</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹6,999</span>
+                        <span class="original-price">₹8,499</span>
+                        <span class="discount">18% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Drippers -->
+            <div class="product-card">
+                <div class="product-img">
+                    <img src="https://img.joomcdn.net/7fe8c1fad3f478e3d2023acccf9b59af18859636_original.jpeg" alt="Drippers">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-content">
+                    <span class="product-category">DRIP IRRIGATION</span>
+                    <h3 class="product-title">Pressure Compensating Drippers (100 PCs)</h3>
+                    <div class="product-price">
+                        <span class="current-price">₹1,299</span>
+                        <span class="original-price">₹1,599</span>
+                        <span class="discount">19% OFF</span>
+                    </div>
+                    <div class="product-actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="wishlist"><i class="far fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const nav = document.querySelector('nav ul');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+        
+        // System tabs functionality
+        const tabs = document.querySelectorAll('.system-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // Filter products based on system type in a real implementation
+            });
+        });
+        
+        // Quick view functionality
+        const quickViews = document.querySelectorAll('.quick-view');
+        quickViews.forEach(view => {
+            view.addEventListener('click', function(e) {
+                e.preventDefault();
+                // In a real implementation, show a modal with product details
+                alert('Quick view functionality would show product details here');
+            });
+        });
+        
+        // Add to cart functionality
+        const addToCartBtns = document.querySelectorAll('.add-to-cart');
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const count = document.querySelector('.cart-count');
+                count.textContent = parseInt(count.textContent) + 1;
+                // In a real implementation, add product to cart
+                alert('Product added to cart!');
+            });
+        });
+        
+        // Wishlist functionality
+        const wishlistBtns = document.querySelectorAll('.wishlist');
+        wishlistBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                // In a real implementation, add/remove from wishlist
+            });
+        });
+    </script>
+</body>
+</html>

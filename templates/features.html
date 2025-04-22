@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kisan Sathi - The New Era of Agriculture</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --primary: #4CAF50;
+      --primary-light: #81C784;
+      --primary-dark: #388E3C;
+      --secondary: #FFC107;
+      --secondary-dark: #FFA000;
+      --background: rgba(241, 248, 233, 0.8);
+      --card-bg: #FFFFFF;
+      --text-dark: #2E7D32;
+      --text-medium: #2E7D32;
+      --text-light: #757575;
+      --border: #C8E6C9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    }
+
+    .content {
+      width: 60%;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-image: url('/static/image/bg2.png'); /* ✅ Local background image */
+      background-size: cover;
+      background-position: center left;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    .content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: 0;
+    }
+
+    .content h1,
+    .content h2,
+    .content p,
+    .content .features {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      color: var(--primary-dark);
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+
+    p.subtitle {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      line-height: 1.7;
+      color: var(--text-medium);
+      max-width: 90%;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .feature {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 25px;
+      border: 1px solid var(--border);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .feature h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature h3 i {
+      font-size: 1.4rem;
+      color: var(--secondary);
+    }
+
+    .feature p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-light);
+    }
+
+    .sidebar {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-logo {
+      width: 200px;
+      height: auto;
+      margin-bottom: 40px;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+      z-index: 1;
+      position: relative;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 350px;
+      background: white;
+      border-radius: 15px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      z-index: 1;
+      position: relative;
+    }
+
+    .auth-title {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      color: var(--primary-dark);
+      position: relative;
+    }
+
+    .auth-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 2px;
+      background: var(--secondary);
+    }
+
+    .auth-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .auth-button {
+      padding: 14px 25px;
+      border-radius: 50px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .login-btn {
+      background: var(--primary-dark);
+      color: white;
+    }
+
+    .login-btn:hover {
+      background: var(--text-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .register-btn {
+      background: white;
+      color: var(--primary-dark);
+      border: 2px solid var(--primary-dark);
+    }
+
+    .register-btn:hover {
+      background: var(--primary-light);
+      color: white;
+      border-color: var(--primary-light);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 25px 0;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .divider::before {
+      margin-right: 15px;
+    }
+
+    .divider::after {
+      margin-left: 15px;
+    }
+
+    .guest-option {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .guest-link {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+      font-weight: 500;
+    }
+
+    .guest-link:hover {
+      color: var(--text-dark);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .content, .sidebar {
+        width: 100%;
+        padding: 50px 40px;
+      }
+
+      .sidebar {
+        background: linear-gradient(to right, var(--primary-light), var(--primary));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content, .sidebar {
+        padding: 40px 30px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-container {
+        padding: 30px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Main Content with Background -->
+    <div class="content">
+      <h1>Kisan Sathi</h1>
+      <h2>The New Era of Agriculture</h2>
+      <p class="subtitle">Sustainable farming solutions for a better tomorrow. Empowering farmers with technology, information, and smart solutions.</p>
+
+      <div class="features">
+        <div class="feature">
+          <h3><i class="fas fa-file-contract"></i> Government Schemes</h3>
+          <p>Access comprehensive information about all agricultural schemes from central and state governments with simplified application processes.</p>
+        </div>
+
+        <div class="feature">
+          <h3><i class="fas fa-leaf"></i> AI Disease Detection</h3>
+          <p>Our advanced AI analyzes crop images to detect diseases early and provides tailored treatment recommendations.</p>
+        </div>
+
+        <div class="feature">
+          <h3><i class="fas fa-map-marker-alt"></i> Agricultural Market Info</h3>
+          <p>
+            Discover nearby agricultural markets (mandis) to easily find where you can buy or sell crops and farming goods. 
+           <p>
+            Our platform helps you identify the closest mandis in your region so you can plan your visits more efficiently.
+
+           </p>
+          </p>
+        </div>
+        
+        <div class="feature">
+          <h3><i class="fas fa-tractor"></i> Agri E-Commerce</h3>
+          <p>Direct marketplace connecting farmers with suppliers for seeds, equipment, and other agricultural needs.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar with Logo and Auth -->
+    <div class="sidebar">
+      <img src="/static/image/logo1.png" alt="Kisan Sathi Logo" class="main-logo"/>
+
+      <div class="auth-container">
+        <h3 class="auth-title">Welcome to Kisan Sathi</h3>
+
+        <div class="auth-buttons">
+          <a href="/register" class="auth-button login-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+
+          <div class="divider">OR</div>
+
+          <a href="/verify" class="auth-button register-btn">
+            <i class="fas fa-user-plus"></i> Create Account
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

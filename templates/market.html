@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>किसान साथी - नजदीकी कृषि बाजार</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #FFC107;
+            --secondary-dark: #FFA000;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #757575;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url("{{ url_for('static', filename='image/background.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            height: 120px;
+            width: auto;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 2rem;
+            margin: 20px 0;
+            color: white;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        .map-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            height: 70vh;
+            margin-bottom: 20px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-bg);
+        }
+
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .control-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            display: none;
+            z-index: 1001;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading i {
+            margin-right: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Language toggle button */
+        .language-toggle {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            position: absolute;
+            top: 20px;
+            right: 100px;
+            z-index: 1000;
+        }
+
+        .language-toggle:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .map-container {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ url_for('static', filename='image/logo1.png') }}" alt="Kisan Sathi Logo" class="logo">
+            <h1 class="page-title" id="page-title">नजदीकी कृषि बाजार</h1>
+            <div></div> <!-- Empty div for alignment -->
+        </div>
+
+        <button class="language-toggle" id="language-toggle">English</button>
+
+        <div class="map-container">
+            <div id="map"></div>
+            <div class="map-controls">
+                <button class="control-btn" id="locate-btn" title="Find my location">
+                    <i class="fas fa-location-arrow"></i>
+                </button>
+                <button class="control-btn" id="refresh-btn" title="Refresh markets">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            <div class="loading" id="loading">
+                <i class="fas fa-spinner"></i> <span id="loading-text">लोड हो रहा है...</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        const map = L.map('map').setView([20.5937, 78.9629], 5); // Default view (India)
+
+        // Set OpenStreetMap as the base map layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        let userMarker = null;
+        let marketMarkers = [];
+
+        // Language toggle functionality
+        let isHindi = true;
+        const pageTitle = document.getElementById('page-title');
+        const languageToggleBtn = document.getElementById('language-toggle');
+        const loadingText = document.getElementById('loading-text');
+        const locateBtn = document.getElementById('locate-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+
+        const translate = {
+            hindi: {
+                title: "नजदीकी कृषि बाजार",
+                language: "English",
+                locateBtnTitle: "मेरे स्थान को खोजें",
+                refreshBtnTitle: "बाजार को रिफ्रेश करें",
+                loadingText: "लोड हो रहा है...",
+                noMarkets: "कोई बाजार नहीं मिला। कृपया किसी अन्य स्थान पर प्रयास करें।",
+                locationError: "स्थान त्रुटि: डिफ़ॉल्ट रूप से दिल्ली दिखाया जा रहा है।",
+                geoNotSupported: "स्थान सेवा समर्थित नहीं: डिफ़ॉल्ट रूप से दिल्ली दिखाया जा रहा है।",
+                currentLocation: "आपकी वर्तमान स्थिति"
+            },
+            english: {
+                title: "Nearby Agricultural Markets",
+                language: "हिंदी",
+                locateBtnTitle: "Find my location",
+                refreshBtnTitle: "Refresh markets",
+                loadingText: "Loading...",
+                noMarkets: "No markets found. Please try another location.",
+                locationError: "Location error: Defaulting to Delhi.",
+                geoNotSupported: "Geolocation not supported: Defaulting to Delhi.",
+                currentLocation: "Your Current Location"
+            }
+        };
+
+        // Set the language based on the selected language
+        function setLanguage(language) {
+            pageTitle.innerText = translate[language].title;
+            languageToggleBtn.innerText = translate[language].language;
+            loadingText.innerText = translate[language].loadingText;
+            locateBtn.title = translate[language].locateBtnTitle;
+            refreshBtn.title = translate[language].refreshBtnTitle;
+        }
+
+        languageToggleBtn.addEventListener('click', () => {
+            isHindi = !isHindi;
+            const language = isHindi ? 'hindi' : 'english';
+            setLanguage(language);
+        });
+
+        // Function to clear all market markers
+        function clearMarketMarkers() {
+            marketMarkers.forEach(marker => map.removeLayer(marker));
+            marketMarkers = [];
+        }
+
+        // Function to locate user and fetch markets
+        function locateUser() {
+            document.getElementById('loading').style.display = 'flex';
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        // Center the map on the user's location
+                        map.setView([lat, lon], 13);
+
+                        // Remove existing user marker if any
+                        if (userMarker) {
+                            map.removeLayer(userMarker);
+                        }
+
+                        // Add a marker for the user's location
+                        userMarker = L.marker([lat, lon], {
+                            icon: L.divIcon({
+                                className: 'user-location-marker',
+                                html: '<i class="fas fa-map-marker-alt" style="color: #FF5722; font-size: 32px;"></i>',
+                                iconSize: [32, 32],
+                                iconAnchor: [16, 32]
+                            })
+                        }).addTo(map)
+                        .bindPopup(isHindi ? translate.hindi.currentLocation : translate.english.currentLocation) // Corrected here
+                        .openPopup();
+
+                        // Fetch nearby markets
+                        fetchNearbyMarkets(lat, lon);
+                    },
+                    function(error) {
+                        document.getElementById('loading').style.display = 'none';
+                        alert(translate[isHindi ? 'hindi' : 'english'].locationError);
+                        fetchNearbyMarkets(28.6139, 77.2090); // Default to Delhi
+                    }
+                );
+            } else {
+                document.getElementById('loading').style.display = 'none';
+                alert(translate[isHindi ? 'hindi' : 'english'].geoNotSupported);
+                fetchNearbyMarkets(28.6139, 77.2090); // Default to Delhi
+            }
+        }
+
+        // Function to fetch nearby agricultural markets
+        function fetchNearbyMarkets(lat, lon) {
+            const radius = 10000; // 10 km radius
+            const query = `
+                [out:json][timeout:25];
+                (
+                    node["amenity"="marketplace"](around:${radius},${lat},${lon});
+                    way["amenity"="marketplace"](around:${radius},${lat},${lon});
+                    relation["amenity"="marketplace"](around:${radius},${lat},${lon});
+                );
+                out center;
+            `;
+            
+            const url = "https://overpass-api.de/api/interpreter?data=" + encodeURIComponent(query);
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('loading').style.display = 'none';
+                    clearMarketMarkers();
+
+                    if (data.elements.length === 0) {
+                        alert(translate[isHindi ? 'hindi' : 'english'].noMarkets);
+                    } else {
+                        data.elements.forEach(market => {
+                            const marketLat = market.lat || market.center?.lat;
+                            const marketLon = market.lon || market.center?.lon;
+
+                            if (marketLat && marketLon) {
+                                const marker = L.marker([marketLat, marketLon]).addTo(map)
+                                    .bindPopup(`<strong>बाजार:</strong> ${market.tags?.name || 'अनाम बाजार'}`)
+                                    .openPopup();
+                                marketMarkers.push(marker);
+                            }
+                        });
+                    }
+                });
+        }
+
+        // Event listeners for buttons
+        document.getElementById('locate-btn').addEventListener('click', locateUser);
+        document.getElementById('refresh-btn').addEventListener('click', () => locateUser());
+
+        // Initially locate user
+        locateUser();
+    </script>
+</body>
+</html>

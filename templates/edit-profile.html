@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>किसान साथी - प्रोफाइल संपादित करें</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --primary-dark: #1B5E20;
+            --secondary: #FFC107;
+            --secondary-dark: #FFA000;
+            --light: #f5f5f5;
+            --dark: #212121;
+            --card-bg: #FFFFFF;
+            --text-color: #333333;
+            --text-light: #757575;
+            --border-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('{{ url_for("static", filename="image/background.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out;
+            position: relative;
+        }
+
+        .logo {
+            width: 80px;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+        }
+
+        .lang-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: transparent;
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 3px 10px;
+            font-size: 0.75rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-toggle:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .flash-message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .flash-message.success {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-light);
+        }
+
+        .flash-message.error {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: #d32f2f;
+            border: 1px solid #f44336;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="lang-toggle" onclick="toggleLanguage()" id="langToggle">English</button>
+        <img src="/static/image/logo1.png" alt="Kisan Sathi Logo" class="logo">
+        <h2 id="title">🌾 प्रोफाइल संपादित करें 🌾</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/edit-profile">
+            <div class="form-group">
+                <label for="name" id="label-name">पूरा नाम:</label>
+                <input type="text" id="name" name="name" value="{{ name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email" id="label-email">ईमेल:</label>
+                <input type="email" id="email" name="email" value="{{ email }}" required readonly>
+                <small id="email-note" style="color: var(--text-light); font-size: 0.8rem;">ईमेल संपादित नहीं किया जा सकता</small>
+            </div>
+
+            <div class="form-group">
+                <label for="phone" id="label-phone">फोन नंबर:</label>
+                <input type="tel" id="phone" name="phone" value="{{ phone }}">
+            </div>
+
+            <div class="form-group">
+                <label for="village" id="label-village">गांव:</label>
+                <input type="text" id="village" name="village" value="{{ village }}">
+            </div>
+
+            <div class="form-group">
+                <label for="district" id="label-district">जिला:</label>
+                <input type="text" id="district" name="district" value="{{ district }}">
+            </div>
+
+            <div class="form-group">
+                <label for="state" id="label-state">राज्य:</label>
+                <input type="text" id="state" name="state" value="{{ state }}">
+            </div>
+
+            <div class="form-group">
+                <label for="crops" id="label-crops">फसलें (अल्पविराम से अलग करें):</label>
+                <input type="text" id="crops" name="crops" value="{{ crops }}">
+            </div>
+
+            <div class="buttons">
+                <a href="/profile" class="btn btn-secondary" id="btn-cancel">
+                    <i class="fas fa-times"></i> 
+                    <span>रद्द करें</span>
+                </a>
+                <button type="submit" class="btn btn-primary" id="btn-save">
+                    <i class="fas fa-save"></i> 
+                    <span>परिवर्तन सहेजें</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let isHindi = true;
+
+        function toggleLanguage() {
+            const title = document.getElementById("title");
+            const langToggle = document.getElementById("langToggle");
+            const labelName = document.getElementById("label-name");
+            const labelEmail = document.getElementById("label-email");
+            const labelPhone = document.getElementById("label-phone");
+            const labelVillage = document.getElementById("label-village");
+            const labelDistrict = document.getElementById("label-district");
+            const labelState = document.getElementById("label-state");
+            const labelCrops = document.getElementById("label-crops");
+            const btnCancel = document.getElementById("btn-cancel");
+            const btnSave = document.getElementById("btn-save");
+            const emailNote = document.getElementById("email-note");
+            
+            if (isHindi) {
+                title.innerText = "🌾 Edit Profile 🌾";
+                langToggle.innerText = "हिन्दी";
+                labelName.innerText = "Full Name:";
+                labelEmail.innerText = "Email:";
+                labelPhone.innerText = "Phone Number:";
+                labelVillage.innerText = "Village:";
+                labelDistrict.innerText = "District:";
+                labelState.innerText = "State:";
+                labelCrops.innerText = "Crops (separate by comma):";
+                btnCancel.innerHTML = '<i class="fas fa-times"></i> <span>Cancel</span>';
+                btnSave.innerHTML = '<i class="fas fa-save"></i> <span>Save Changes</span>';
+                emailNote.innerText = "Email cannot be edited";
+            } else {
+                title.innerText = "🌾 प्रोफाइल संपादित करें 🌾";
+                langToggle.innerText = "English";
+                labelName.innerText = "पूरा नाम:";
+                labelEmail.innerText = "ईमेल:";
+                labelPhone.innerText = "फोन नंबर:";
+                labelVillage.innerText = "गांव:";
+                labelDistrict.innerText = "जिला:";
+                labelState.innerText = "राज्य:";
+                labelCrops.innerText = "फसलें (अल्पविराम से अलग करें):";
+                btnCancel.innerHTML = '<i class="fas fa-times"></i> <span>रद्द करें</span>';
+                btnSave.innerHTML = '<i class="fas fa-save"></i> <span>परिवर्तन सहेजें</span>';
+                emailNote.innerText = "ईमेल संपादित नहीं किया जा सकता";
+            }
+            
+            isHindi = !isHindi;
+        }
+    </script>
+</body>
+</html> 

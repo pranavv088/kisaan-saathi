@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crop Guide</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+
+    :root {
+      --primary-color: #4CAF50;
+      --secondary-color: #FFC107;
+      --accent-color: #2196F3;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/image/background.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 48px;
+      font-weight: 900;
+      text-transform: uppercase;
+      text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.9);
+      margin: 0;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: var(--secondary-color);
+      margin: 10px auto;
+      border-radius: 2px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      backdrop-filter: blur(8px);
+      padding: 25px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--primary-color);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      border-color: var(--primary-color);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      transition: transform 0.3s;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover img {
+      transform: scale(1.03);
+      border-color: var(--primary-color);
+    }
+
+    .card strong {
+      display: block;
+      font-size: 24px;
+      color: var(--secondary-color);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .card p {
+      margin-bottom: 20px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .more-info-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      margin-top: 10px;
+    }
+
+    .more-info-btn:hover {
+      background-color: var(--secondary-color);
+      color: #333;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 1200px) {
+      .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 36px;
+      }
+      
+      .grid-container {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 28px;
+        padding: 20px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Crop Guide</h1>
+
+  <div class="grid-container">
+    <div class="card">
+      <img src="/static/image/SUGARCANE.jpg" alt="Sugarcane">
+      <strong>Sugarcane</strong>
+      <p>Essential cash crop with year-round cultivation cycle.</p>
+      <a href="/sugarcane" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/rice.jpeg" alt="Rice">
+      <strong>Rice</strong>
+      <p>Staple food crop cultivated across various seasons.</p>
+      <a href="/rice" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/wheat.jpeg" alt="Wheat">
+      <strong>Wheat</strong>
+      <p>Primary crop for bread and flour production.</p>
+      <a href="/wheat" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/onion.jpg" alt="Onion">
+      <strong>Onion</strong>
+      <p>Essential kitchen vegetable with multiple harvests.</p>
+      <a href="/onion" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/tomato.avif" alt="Tomato">
+      <strong>Tomato</strong>
+      <p>Versatile fruit vegetable used in countless dishes.</p>
+      <a href="/tomato" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/potato.jpg" alt="Potato">
+      <strong>Potato</strong>
+      <p>Starchy tuber crop grown in various conditions.</p>
+      <a href="/potato" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/cabbage.jpg" alt="Cabbage">
+      <strong>Cabbage</strong>
+      <p>Leafy vegetable with multiple varieties.</p>
+      <a href="/cabbage" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/ladii.jpg" alt="Ladies Finger">
+      <strong>Ladies Finger</strong>
+      <p>Warm season vegetable known for nutrition.</p>
+      <a href="/ladii" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/image.png" alt="Chilli">
+      <strong>Chilli</strong>
+      <p>Spice crop with multiple varieties and heat levels.</p>
+      <a href="/chilli" class="more-info-btn">More Information</a>
+    </div>
+
+    <div class="card">
+      <img src="/static/image/garlic.jpg" alt="Garlic">
+      <strong>Garlic</strong>
+      <p>Bulb crop valued for culinary and medicinal uses.</p>
+      <a href="/garlic" class="more-info-btn">More Information</a>
+    </div>
+  </div>
+
+  <script>
+    // Add animation to cards on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 100 * index);
+      });
+    });
+  </script>
+</body>
+</html>

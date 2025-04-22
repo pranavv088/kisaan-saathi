@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rice Farming Guide - Kisan Sathi</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    body {
+        font-family: Poppins, sans-serif;
+        margin: 0;
+        background-color: #010101;
+        color: #eee;
+        overflow-x: hidden;
+    }
+
+    svg {
+        width: 25px;
+    }
+
+    header {
+        width: 1200px;
+        max-width: 90%;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 50px 1fr 50px;
+        grid-template-rows: 50px;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+    }
+
+    header .logo {
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    header .menu {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    /* CSS Slider */
+    .slider {
+        height: 100vh;
+        margin-top: -50px;
+        position: relative;
+    }
+
+    .slider .list .item {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: .5s;
+        display: flex;
+        align-items: center;
+    }
+
+    .slider .list .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        z-index: 1;
+    }
+
+    .slider .list .item::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 2;
+    }
+
+    .slider .list .item .content {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 5%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .slider .list .item .content h2 {
+        font-size: 2.5rem;
+        margin: 0 0 1rem;
+        line-height: 1.2;
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .slider .list .item .content p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin: 0;
+        color: #f0f0f0;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        background: rgba(0,0,0,0.4);
+        padding: 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+    }
+
+    .slider .list .item.active {
+        opacity: 1;
+        z-index: 10;
+    }
+
+    .arrows {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 30px;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .arrows button {
+        background-color: rgba(255,255,255,0.3);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .arrows button:hover {
+        background-color: rgba(255,255,255,0.7);
+        color: #000;
+        transform: scale(1.1);
+    }
+
+    .thumbnail {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 1000px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        z-index: 1000;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .thumbnail .item {
+        width: 120px;
+        height: 80px;
+        filter: brightness(0.6);
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .thumbnail .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .thumbnail .item .content {
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .thumbnail .item.active {
+        filter: brightness(1.2);
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 992px) {
+        .slider .list .item .content {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .slider .list .item .content h2 {
+            font-size: 2rem;
+        }
+        
+        .slider .list .item .content p {
+            font-size: 1rem;
+        }
+        
+        .thumbnail {
+            bottom: 10px;
+        }
+        
+        .thumbnail .item {
+            width: 100px;
+            height: 70px;
+        }
+    }
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .logo-img {
+        height: 50px;
+        width: auto;
+    }
+
+    .logo-text {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        .slider .list .item .content h2 {
+            font-size: 1.8rem;
+        }
+        
+        .arrows {
+            right: 15px;
+        }
+        
+        .arrows button {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+        
+        .thumbnail {
+            justify-content: flex-start;
+            padding: 8px;
+        }
+        
+        .thumbnail .item {
+            width: 80px;
+            height: 60px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .slider .list .item .content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slider .list .item .content p {
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .thumbnail {
+            bottom: 5px;
+        }
+        
+        .thumbnail .item {
+            width: 70px;
+            height: 50px;
+        }
+        
+        .thumbnail .item .content {
+            font-size: 0.7rem;
+        }
+    }
+
+    /* Animation for content */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .slider .list .item.active .content h2,
+    .slider .list .item.active .content p {
+        animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .slider .list .item.active .content p {
+        animation-delay: 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo-container">
+        <img src="/static/image/logo1.png" alt="Kisan Sathi Logo" class="logo-img">
+        <div class="logo-text">Kisan Sathi</div>
+    </div>
+    <ul class="menu">
+      <li>Rice Farming: Complete 6-Step Guide</li>
+    </ul>
+    <div class="search">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- Slider -->
+  <div class="slider">
+    <div class="list">
+
+      <!-- 1. Land Preparation -->
+      <div class="item active">
+        <img src="https://as1.ftcdn.net/v2/jpg/14/06/05/96/1000_F_1406059678_62mHQwNgU6y7rD8CLq3rpSFP575Fc8gR.jpg" />
+        <div class="content">
+          <h2>Land Preparation</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🌍</span> Choose fertile land with reliable water supply<br>
+              <span class="bullet">•</span> 📏 Level the field for even water spread<br>
+              <span class="bullet">•</span> 🐂 Plough & harrow to break soil clumps<br>
+              <span class="bullet">•</span> 💧 Flood lightly (5–10 cm) before transplanting
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Seed & Seedling Prep -->
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/08/66/80/23/240_F_866802337_JWz7rkrPzMRdwoJgZBywUfz9pElFcfwh.jpg" />
+        <div class="content">
+          <h2>Seed Selection & Nursery</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🌾</span> <strong>Popular Varieties</strong>:<br>
+              <span class="bullet">•</span> Basmati<br>
+              <span class="bullet">•</span> IR-64<br>
+              <span class="bullet">•</span> Swarna<br>
+              <span class="bullet">•</span> Pusa 1121<br>
+              <span class="bullet">•</span> Sona Masuri<br><br>
+              <span class="emoji">🛡️</span> Use <strong>treated seeds</strong> to prevent diseases<br><br>
+              <span class="bullet">•</span> Prepare nursery beds with good drainage<br>
+              <span class="bullet">•</span> Transplant when seedlings reach 20–30 cm<br>
+              <span class="bullet">•</span> Maintain 20–30 cm spacing during transplanting
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Fertilization & Management -->
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/09/68/07/71/240_F_968077160_dSkbh7ZWzsmB0BoX4JKfQfOcM9yrUItR.jpg" />
+        <div class="content">
+          <h2>Fertilization & Management</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🧪</span> Apply <strong>basal fertilizer</strong> before transplanting<br>
+              <span class="bullet">•</span> Top-dress at tillering & panicle stages<br>
+              <span class="bullet">•</span> Remove weeds manually or chemically<br>
+              <span class="bullet">•</span> Monitor & treat pests/diseases using IPM<br>
+              <span class="bullet">•</span> Maintain shallow water (5–10 cm) regularly
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Growth Monitoring -->
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/10/70/29/50/240_F_1070295086_m42Fk86JGJDffPhF5AnbyIuENsMIvAxn.jpg"/>
+        <div class="content">
+          <h2>Growth Stages</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">📈</span> Monitor all 3 rice growth stages:<br><br>
+              <span class="bullet">•</span> 🌱 <strong>Vegetative</strong>: Roots, leaves, stems grow<br>
+              <span class="bullet">•</span> 🌸 <strong>Reproductive</strong>: Panicles (flowers) form<br>
+              <span class="bullet">•</span> 🌾 <strong>Ripening</strong>: Grains mature & turn golden<br><br>
+              <span class="emoji">📅</span> Ensure timely care during critical phases
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Harvesting -->
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/10/30/92/65/240_F_1030926551_fQtdHhXfiZRl2m5BCmx1OocQz1PgmW0A.jpg"/>
+        <div class="content">
+          <h2>Harvesting</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🔍</span> <strong>Signs of Maturity</strong>:<br>
+              <span class="bullet">•</span> Grains harden and turn golden brown<br>
+              <span class="bullet">•</span> Moisture content: ~20%<br><br>
+              <span class="emoji">🧺</span> Use sickles or combine harvesters<br>
+              <span class="bullet">•</span> Avoid damage for better quality
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Post-Harvest & Storage -->
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/11/64/00/41/240_F_1164004122_votVsZE5d1GExxQZ9CaMDhtgGKvN0l99.jpg"/>
+        <div class="content">
+          <h2>Post-Harvest & Storage</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🌞</span> Dry harvested rice under the sun or use dryers<br>
+              <span class="bullet">•</span> Mill to remove husk & bran<br>
+              <span class="bullet">•</span> Store in airtight containers or godowns<br><br>
+              <span class="emoji">🐭</span> Protect from pests with safe storage practices 
+            </p>
+            <div class="video-container" style="text-align: center; margin-top: 10px;">
+              <iframe width="320" height="180" src="https://www.youtube.com/embed/L_zHwrL3nSc?si=XiBmM3WAQLpEwICw" 
+              title="Rice Storage Tips" frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen></iframe>
+            </div>  
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Arrows -->
+    <div class="arrows">
+      <button id="prev"><</button>
+      <button id="next">></button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnail">
+      <div class="item active"><img src="https://as1.ftcdn.net/v2/jpg/14/06/05/96/1000_F_1406059678_62mHQwNgU6y7rD8CLq3rpSFP575Fc8gR.jpg" /><div class="content">Land</div></div>
+      <div class="item"><img src="https://t4.ftcdn.net/jpg/08/66/80/23/240_F_866802337_JWz7rkrPzMRdwoJgZBywUfz9pElFcfwh.jpg" /><div class="content">Seeds</div></div>
+      <div class="item"><img src="https://t4.ftcdn.net/jpg/09/68/07/71/240_F_968077160_dSkbh7ZWzsmB0BoX4JKfQfOcM9yrUItR.jpg" /><div class="content">Care</div></div>
+      <div class="item"><img src="https://t3.ftcdn.net/jpg/10/70/29/50/240_F_1070295086_m42Fk86JGJDffPhF5AnbyIuENsMIvAxn.jpg" /><div class="content">Growth</div></div>
+      <div class="item"><img src="https://t4.ftcdn.net/jpg/10/30/92/65/240_F_1030926551_fQtdHhXfiZRl2m5BCmx1OocQz1PgmW0A.jpg" /><div class="content">Harvest</div></div>
+      <div class="item"><img src="https://t4.ftcdn.net/jpg/11/64/00/41/240_F_1164004122_votVsZE5d1GExxQZ9CaMDhtgGKvN0l99.jpg" /><div class="content">Storage</div></div>
+    </div>
+  </div>
+
+  <script>
+    let items = document.querySelectorAll('.slider .list .item');
+    let next = document.getElementById('next');
+    let prev = document.getElementById('prev');
+    let thumbnails = document.querySelectorAll('.thumbnail .item');
+    
+    // config param
+    let countItem = items.length;
+    let itemActive = 0;
+    
+    // event next click
+    next.onclick = function(){
+        itemActive = itemActive + 1;
+        if(itemActive >= countItem){
+            itemActive = 0;
+        }
+        showSlider();
+    }
+    
+    // event prev click
+    prev.onclick = function(){
+        itemActive = itemActive - 1;
+        if(itemActive < 0){
+            itemActive = countItem - 1;
+        }
+        showSlider();
+    }
+    
+    function showSlider(){
+        // remove item active old
+        let itemActiveOld = document.querySelector('.slider .list .item.active');
+        let thumbnailActiveOld = document.querySelector('.thumbnail .item.active');
+        itemActiveOld.classList.remove('active');
+        thumbnailActiveOld.classList.remove('active');
+    
+        // active new item
+        items[itemActive].classList.add('active');
+        thumbnails[itemActive].classList.add('active');
+        setPositionThumbnail();
+    }
+    
+    function setPositionThumbnail () {
+        let thumbnailActive = document.querySelector('.thumbnail .item.active');
+        let rect = thumbnailActive.getBoundingClientRect();
+        if (rect.left < 0 || rect.right > window.innerWidth) {
+            thumbnailActive.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+        }
+    }
+    
+    // click thumbnail
+    thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', () => {
+            itemActive = index;
+            showSlider();
+        })
+    });
+  </script>
+</body>
+</html>

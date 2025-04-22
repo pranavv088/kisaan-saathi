@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kisan Sathi - Cabbage Farming Guide</title>
+ 
+ <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  
+  body {
+      font-family: Poppins, sans-serif;
+      margin: 0;
+      background-color: #010101;
+      color: #eee;
+      overflow-x: hidden;
+  }
+  
+  svg {
+      width: 25px;
+  }
+  
+  header {
+      width: 1200px;
+      max-width: 90%;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 50px 1fr 50px;
+      grid-template-rows: 50px;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 100;
+  }
+  
+  header .logo {
+      font-weight: bold;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+  
+  header .logo img {
+      height: 30px;
+  }
+  
+  header .menu {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-weight: 500;
+      font-size: 0.9rem;
+  }
+  
+  /* CSS Slider */
+  .slider {
+      height: 100vh;
+      margin-top: -50px;
+      position: relative;
+  }
+  
+  .slider .list .item {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: .5s;
+      display: flex;
+      align-items: center;
+  }
+  
+  .slider .list .item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      z-index: 1;
+  }
+  
+  .slider .list .item::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2;
+  }
+  
+  .slider .list .item .content {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+  }
+  
+  .slider .list .item .content h2 {
+      font-size: 2.5rem;
+      margin: 0 0 1rem;
+      line-height: 1.2;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .slider .list .item .content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin: 0;
+      color: #f0f0f0;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.4);
+      padding: 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+  }
+  
+  .slider .list .item.active {
+      opacity: 1;
+      z-index: 10;
+  }
+  
+  .arrows {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 30px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+  }
+  
+  .arrows button {
+      background-color: rgba(255,255,255,0.3);
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .arrows button:hover {
+      background-color: rgba(255,255,255,0.7);
+      color: #000;
+      transform: scale(1.1);
+  }
+  
+  .thumbnail {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      z-index: 1000;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      overflow-x: auto;
+      scrollbar-width: none;
+  }
+  
+  .thumbnail .item {
+      width: 120px;
+      height: 80px;
+      filter: brightness(0.6);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+  }
+  
+  .thumbnail .item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+  
+  .thumbnail .item .content {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  
+  .thumbnail .item.active {
+      filter: brightness(1.2);
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 992px) {
+      .slider .list .item .content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+      }
+      
+      .slider .list .item .content h2 {
+          font-size: 2rem;
+      }
+      
+      .slider .list .item .content p {
+          font-size: 1rem;
+      }
+      
+      .thumbnail {
+          bottom: 10px;
+      }
+      
+      .thumbnail .item {
+          width: 100px;
+          height: 70px;
+      }
+  }
+  
+  @media screen and (max-width: 768px) {
+      .slider .list .item .content h2 {
+          font-size: 1.8rem;
+      }
+      
+      .arrows {
+          right: 15px;
+      }
+      
+      .arrows button {
+          width: 40px;
+          height: 40px;
+          font-size: 1.2rem;
+      }
+      
+      .thumbnail {
+          justify-content: flex-start;
+          padding: 8px;
+      }
+      
+      .thumbnail .item {
+          width: 80px;
+          height: 60px;
+      }
+  }
+  
+  @media screen and (max-width: 480px) {
+      .slider .list .item .content h2 {
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+      }
+      
+      .slider .list .item .content p {
+          padding: 15px;
+          font-size: 0.9rem;
+      }
+      
+      .thumbnail {
+          bottom: 5px;
+      }
+      
+      .thumbnail .item {
+          width: 70px;
+          height: 50px;
+      }
+      
+      .thumbnail .item .content {
+          font-size: 0.7rem;
+      }
+  }
+  
+  /* Animation for content */
+  @keyframes fadeInUp {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
+      }
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+  
+  .slider .list .item.active .content h2,
+  .slider .list .item.active .content p {
+      animation: fadeInUp 0.8s ease forwards;
+  }
+  
+  .slider .list .item.active .content p {
+      animation-delay: 0.3s;
+  }
+
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="/static/image/logo1.png" alt="Kisan Sathi Logo" />
+      Kisan Sathi
+    </div>
+    <ul class="menu">
+      <li>Cabbage Farming: Complete Guide</li>
+    </ul>
+    <div class="search">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- Slider -->
+  <div class="slider">
+    <!-- List Items -->
+    <div class="list">
+      <!-- Overview -->
+      <div class="item active">
+        <img src="https://t3.ftcdn.net/jpg/10/79/43/52/240_F_1079435245_ZNjD1oUAgRkOOQQej54jv7lPfHCfKyyr.jpg" />
+        <div class="content">
+          <h2>Overview</h2>
+          <div class="text-content">
+            <p>
+              <span class="emoji">🥬</span> <strong>Cabbage</strong> is a popular cool-season leafy vegetable crop.<br><br>
+              <span class="bullet">•</span> Rich in vitamins A, C, and K.<br>
+              <span class="bullet">•</span> Grown widely in states like West Bengal, Bihar, Karnataka, and Maharashtra.<br>
+              <span class="bullet">•</span> Used in salads, cooking, and pickles.<br><br>
+              <span class="emoji">📊</span> Average yield: 300–500 quintals/ha<br>
+              <span class="emoji">🌎</span> India is among the top cabbage-producing countries.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cabbage Farming Guide -->
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/14/05/54/19/240_F_1405541961_Q5BncdhozsIkNZWfzJmTKBSvlRW6dXI6.jpg" />
+        <div class="content">
+          <h2>Cabbage Farming Guide</h2>
+          <div class="text-content">
+            <p>
+              <strong>1. Climate and Soil:</strong><br>
+              <span class="emoji">❄️</span> Prefers cool climate (15°C–20°C); not frost-tolerant.<br>
+              <span class="emoji">🌱</span> Grows best in well-drained, fertile loamy soils with pH 6.0–6.8.<br><br>
+
+              <strong>2. Land Preparation:</strong><br>
+              <span class="emoji">🪓</span> Plough the land 2–3 times, incorporate organic manure, and prepare raised beds.<br><br>
+
+              <strong>3. Nursery and Transplanting:</strong><br>
+              <span class="emoji">🌿</span> Sow seeds in a nursery bed; ready for transplanting after 25–30 days.<br>
+              <span class="emoji">📏</span> Maintain spacing of 45x45 cm in main field.<br><br>
+
+              <strong>4. Irrigation and Weeding:</strong><br>
+              <span class="emoji">💧</span> Provide irrigation every 7–10 days; avoid overwatering.<br>
+              <span class="emoji">🌾</span> Weed regularly to avoid competition for nutrients.<br><br>
+
+              <strong>5. Fertilization:</strong><br>
+              <span class="emoji">🌿</span> Apply FYM (Farm Yard Manure) and NPK fertilizers based on soil test.<br>
+              <span class="emoji">🍀</span> Top dressing of nitrogen at 30 days after transplanting enhances head formation.<br><br>
+
+              <strong>6. Pest and Disease Control:</strong><br>
+              <span class="emoji">🐛</span> Common pests: aphids, cutworms, cabbage butterfly.<br>
+              <span class="emoji">🧫</span> Common diseases: black rot, downy mildew.<br>
+              <span class="emoji">🧪</span> Use neem-based or recommended pesticides/fungicides.<br><br>
+
+              <strong>7. Harvesting:</strong><br>
+              <span class="emoji">✂️</span> Harvest when heads are firm and mature (70–90 days after transplanting).<br>
+              <span class="emoji">🧺</span> Avoid delay to prevent splitting; store in cool, moist conditions.
+            </p>
+            <div class="video-container" style="text-align: center; margin-top: 10px;">
+                <iframe width="320" height="180" src="https://www.youtube.com/embed/L_zHwrL3nSc?si=XiBmM3WAQLpEwICw" 
+                title="chilli Storage Tips" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
+            </div> 
+          </div>
+        </div>
+      </div>
+
+      <!-- Add more slides here if needed -->
+
+    </div>
+
+    <!-- Button Arrows -->
+    <div class="arrows">
+      <button id="prev"><</button>
+      <button id="next">></button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnail">
+      <div class="item active">
+        <img src="https://t3.ftcdn.net/jpg/10/79/43/52/240_F_1079435245_ZNjD1oUAgRkOOQQej54jv7lPfHCfKyyr.jpg" />
+        <div class="content">Overview</div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/14/05/54/19/240_F_1405541961_Q5BncdhozsIkNZWfzJmTKBSvlRW6dXI6.jpg" />
+        <div class="content">Climate</div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/12/37/56/71/240_F_1237567125_jztO4GoTaBdawfSsVHuutveU7WSI2twG.jpg" />
+        <div class="content">Planting</div>
+      </div>
+      <div class="item">
+        <img src="https://t3.ftcdn.net/jpg/12/30/74/26/240_F_1230742666_3yN7K78wGJaDV9JEFW5ITS39PwzAPnOO.jpg" />
+        <div class="content">Care</div>
+      </div>
+      <div class="item">
+        <img src="https://t4.ftcdn.net/jpg/10/04/60/69/240_F_1004606983_Sf6N9QkYcKxv2qEOdbsn6EFwlrAipdRH.jpg" />
+        <div class="content">Farming Guide</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+let items = document.querySelectorAll('.slider .list .item');
+let next = document.getElementById('next');
+let prev = document.getElementById('prev');
+let thumbnails = document.querySelectorAll('.thumbnail .item');
+
+// config param
+let countItem = items.length;
+let itemActive = 0;
+
+// event next click
+next.onclick = function(){
+    itemActive = itemActive + 1;
+    if(itemActive >= countItem){
+        itemActive = 0;
+    }
+    showSlider();
+}
+
+// event prev click
+prev.onclick = function(){
+    itemActive = itemActive - 1;
+    if(itemActive < 0){
+        itemActive = countItem - 1;
+    }
+    showSlider();
+}
+
+// ❌ Removed auto-run slider
+// let refreshInterval = setInterval(() => {
+//     next.click();
+// }, 5000);
+
+function showSlider(){
+    // remove item active old
+    let itemActiveOld = document.querySelector('.slider .list .item.active');
+    let thumbnailActiveOld = document.querySelector('.thumbnail .item.active');
+    itemActiveOld.classList.remove('active');
+    thumbnailActiveOld.classList.remove('active');
+
+    // active new item
+    items[itemActive].classList.add('active');
+    thumbnails[itemActive].classList.add('active');
+    setPositionThumbnail();
+
+    // ❌ Removed auto time reset
+    // clearInterval(refreshInterval);
+    // refreshInterval = setInterval(() => {
+    //     next.click();
+    // }, 5000);
+}
+
+function setPositionThumbnail () {
+    let thumbnailActive = document.querySelector('.thumbnail .item.active');
+    let rect = thumbnailActive.getBoundingClientRect();
+    if (rect.left < 0 || rect.right > window.innerWidth) {
+        thumbnailActive.scrollIntoView({ behavior: 'smooth', inline: 'nearest' });
+    }
+}
+
+// click thumbnail
+thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', () => {
+        itemActive = index;
+        showSlider();
+    })
+});
+
+  </script>
+</body>
+</html>

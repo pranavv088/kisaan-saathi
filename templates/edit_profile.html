@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>किसान साथी - प्रोफाइल संपादन</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: url('{{ url_for("static", filename="image/background.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h1 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .save-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            background-color: #388E3C;
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .flash-message.success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .flash-message.danger {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-picture-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .profile-picture-upload {
+            display: none;
+        }
+
+        .profile-picture-label {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .profile-picture-label:hover {
+            background-color: #388E3C;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <h1>प्रोफाइल संपादित करें</h1>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+            <div class="profile-picture-container">
+                <img src="{{ profile_picture or url_for('static', filename='image/default-profile.png') }}" 
+                     alt="Profile Picture" 
+                     class="profile-picture" 
+                     id="profilePicturePreview">
+                <input type="file" 
+                       id="profilePicture" 
+                       name="profile_picture" 
+                       class="profile-picture-upload" 
+                       accept="image/*">
+                <label for="profilePicture" class="profile-picture-label">
+                    <i class="fas fa-camera"></i> प्रोफाइल फोटो बदलें
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="name">नाम *</label>
+                <input type="text" id="name" name="name" value="{{ name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">फोन नंबर</label>
+                <input type="tel" id="phone" name="phone" value="{{ phone }}">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="village">गांव</label>
+                    <input type="text" id="village" name="village" value="{{ village }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="district">जिला</label>
+                    <input type="text" id="district" name="district" value="{{ district }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="state">राज्य</label>
+                <input type="text" id="state" name="state" value="{{ state }}">
+            </div>
+
+            <div class="form-group">
+                <label for="farm_size">खेत का आकार</label>
+                <input type="text" id="farm_size" name="farm_size" value="{{ farm_size }}">
+            </div>
+
+            <div class="form-group">
+                <label for="crops">फसलें (कॉमा से अलग करें)</label>
+                <input type="text" id="crops" name="crops" value="{{ crops }}">
+            </div>
+
+            <div class="button-container">
+                <a href="/profile" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> वापस जाएं
+                </a>
+                <button type="submit" class="save-btn">
+                    <i class="fas fa-save"></i> सेव करें
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('profilePicture').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePicturePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html> 
