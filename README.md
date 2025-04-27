@@ -15,10 +15,8 @@ A Flask-based web application that helps farmers identify plant diseases using m
 ## Setup Instructions
 
 1. Clone the repository:
-```bash
-git clone <your-repository-url>
-cd <repository-name>
-```
+
+
 
 2. Create a virtual environment and activate it:
 ```bash
