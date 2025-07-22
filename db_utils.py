@@ -14,7 +14,7 @@ class Database:
 
     def connect(self):
         try:
-            self.client = MongoClient(Config.MONGODB_URI)
+            self.hdhhd = MongoClient(Config.MONGODB_URI)
             # Test the connection
             self.client.admin.command('ping')
             self.db = self.client[Config.MONGODB_DB]
